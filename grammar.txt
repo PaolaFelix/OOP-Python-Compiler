@@ -1,0 +1,70 @@
+S → Program
+
+### Estructura general del programa
+
+Program       → { Declaration }
+
+Declaration   → ImportStmt
+              | ClassDecl
+              | FuncDecl
+              | Statement
+
+###Clases y funciones
+
+ClassDecl     → "class" ClassName [ "(" BaseClass ")" ] ":" Block
+
+FuncDecl      → "def" FuncName "(" [ ParamList ] ")" ":" Block
+
+ParamList     → Identifier { "," Identifier }
+
+Block         → INDENT { Statement } DEDENT
+Nota: Se asume indentación como en Python (INDENT/DEDENT) para definir bloques.
+
+###Sentencias
+
+Statement     → Assignment
+              | ReturnStmt
+              | PassStmt
+              | ExpressionStmt
+              | FuncDecl
+              | ClassDecl
+
+Assignment    → Identifier "=" Expression
+
+ReturnStmt    → "return" Expression
+
+PassStmt      → "pass"
+
+ExpressionStmt → Expression
+
+###Expresiones
+
+Expression    → Literal
+              | Identifier
+              | FunctionCall
+              | BinaryOp
+
+FunctionCall  → Identifier "(" [ ArgList ] ")"
+
+ArgList       → Expression { "," Expression }
+
+BinaryOp      → Expression Operator Expression
+
+Operator      → "+" | "-" | "*" | "/" | "==" | "!="
+
+###Importaciones
+
+ImportStmt    → "import" Identifier { "," Identifier }
+              | "from" Identifier { "." Identifier } "import" Identifier { "," Identifier }
+
+###Terminales
+
+Identifier    → (letter| "_") (letter | digit | "_")*
+ClassName     → Identifier
+FuncName      → Identifier
+BaseClass     → Identifier
+
+Literal       → Number | String
+
+Number        → digit+
+String        → '"' char* '"' | "'" char* "'"
