@@ -3,2629 +3,1202 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> stmt
-Rule 2     program -> program stmt
-Rule 3     stmt -> CLASS ID LPAREN ID RPAREN COLON block
-Rule 4     stmt -> CLASS ID COLON block
-Rule 5     stmt -> DEF ID LPAREN params RPAREN COLON block
-Rule 6     stmt -> DEF ID LPAREN RPAREN COLON block
-Rule 7     stmt -> IMPORT import_path
-Rule 8     stmt -> FROM ID IMPORT ID
-Rule 9     stmt -> RETURN expr
-Rule 10    stmt -> RETURN
-Rule 11    stmt -> PASS
-Rule 12    stmt -> IF expr COLON block ELSE COLON block
-Rule 13    stmt -> IF expr COLON block
-Rule 14    stmt -> WHILE expr COLON block
-Rule 15    stmt -> target EQ_OP expr
-Rule 16    stmt -> expr
-Rule 17    block -> NEWLINE program
-Rule 18    params -> ID
-Rule 19    params -> params COMMA ID
-Rule 20    import_path -> ID
-Rule 21    import_path -> import_path DOT ID
-Rule 22    expr -> term
-Rule 23    expr -> expr PLUS term
-Rule 24    expr -> expr MINUS term
-Rule 25    expr -> expr TIMES term
-Rule 26    expr -> expr DIVIDE term
-Rule 27    expr -> expr EQ term
-Rule 28    expr -> expr NE term
-Rule 29    expr -> expr LT term
-Rule 30    expr -> expr GT term
-Rule 31    expr -> expr AND term
-Rule 32    expr -> expr OR term
-Rule 33    term -> ID
-Rule 34    term -> NUM
-Rule 35    term -> STR
-Rule 36    term -> LPAREN expr RPAREN
-Rule 37    term -> NOT term
-Rule 38    term -> MINUS term
-Rule 39    term -> ID call_chain
-Rule 40    call_chain -> DOT ID
-Rule 41    call_chain -> LPAREN args RPAREN
-Rule 42    call_chain -> call_chain DOT ID
-Rule 43    call_chain -> call_chain LPAREN args RPAREN
-Rule 44    args -> expr
-Rule 45    args -> args COMMA expr
-Rule 46    target -> ID
-Rule 47    target -> ID call_chain
+Rule 1     program -> stmt_list
+Rule 2     stmt_list -> stmt stmt_list
+Rule 3     stmt_list -> stmt
+Rule 4     stmt -> CLASS ID COLON NEWLINE block
+Rule 5     stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block
+Rule 6     stmt -> ID EQUALS expr NEWLINE
+Rule 7     stmt -> ID DOT ID EQUALS expr NEWLINE
+Rule 8     stmt -> SELF DOT ID EQUALS expr NEWLINE
+Rule 9     stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE
+Rule 10    stmt -> ID LPAREN arg_list RPAREN NEWLINE
+Rule 11    stmt -> RETURN expr NEWLINE
+Rule 12    stmt -> RETURN NEWLINE
+Rule 13    stmt -> PASS NEWLINE
+Rule 14    method_name -> ID
+Rule 15    method_name -> INIT
+Rule 16    param_list -> <empty>
+Rule 17    param_list -> SELF
+Rule 18    param_list -> SELF COMMA params
+Rule 19    param_list -> params
+Rule 20    params -> ID COMMA params
+Rule 21    params -> ID
+Rule 22    expr -> expr binary_op expr
+Rule 23    expr -> term
+Rule 24    term -> ID LPAREN arg_list RPAREN
+Rule 25    expr -> ID LPAREN arg_list RPAREN
+Rule 26    term -> SELF DOT ID
+Rule 27    term -> ID DOT ID
+Rule 28    term -> ID
+Rule 29    term -> NUMBER
+Rule 30    term -> STRING
+Rule 31    term -> LPAREN expr RPAREN
+Rule 32    binary_op -> PLUS
+Rule 33    binary_op -> MINUS
+Rule 34    binary_op -> MUL
+Rule 35    binary_op -> DIV
+Rule 36    arg_list -> <empty>
+Rule 37    arg_list -> expr COMMA arg_list
+Rule 38    arg_list -> expr
+Rule 39    block -> INDENT stmt_list DEDENT
 
 Terminals, with rules where they appear
 
-AND                  : 31
-CLASS                : 3 4
-COLON                : 3 4 5 6 12 12 13 14
-COMMA                : 19 45
-DEF                  : 5 6
-DIVIDE               : 26
-DOT                  : 21 40 42
-ELSE                 : 12
-EQ                   : 27
-EQ_OP                : 15
-FROM                 : 8
-GT                   : 30
-ID                   : 3 3 4 5 6 8 8 18 19 20 21 33 39 40 42 46 47
-IF                   : 12 13
-IMPORT               : 7 8
-LPAREN               : 3 5 6 36 41 43
-LT                   : 29
-MINUS                : 24 38
-NE                   : 28
-NEWLINE              : 17
-NOT                  : 37
-NUM                  : 34
-OR                   : 32
-PASS                 : 11
-PLUS                 : 23
-RETURN               : 9 10
-RPAREN               : 3 5 6 36 41 43
-STR                  : 35
-TIMES                : 25
-WHILE                : 14
+CLASS                : 4
+COLON                : 4 5
+COMMA                : 18 20 37
+DEDENT               : 39
+DEF                  : 5
+DIV                  : 35
+DOT                  : 7 8 9 26 27
+EQUALS               : 6 7 8
+ID                   : 4 6 7 7 8 9 9 10 14 20 21 24 25 26 27 27 28
+INDENT               : 39
+INIT                 : 15
+LPAREN               : 5 9 10 24 25 31
+MINUS                : 33
+MUL                  : 34
+NEWLINE              : 4 5 6 7 8 9 10 11 12 13
+NUMBER               : 29
+PASS                 : 13
+PLUS                 : 32
+RETURN               : 11 12
+RPAREN               : 5 9 10 24 25 31
+SELF                 : 8 17 18 26
+STRING               : 30
 error                : 
 
 Nonterminals, with rules where they appear
 
-args                 : 41 43 45
-block                : 3 4 5 6 12 12 13 14
-call_chain           : 39 42 43 47
-expr                 : 9 12 13 14 15 16 23 24 25 26 27 28 29 30 31 32 36 44 45
-import_path          : 7 21
-params               : 5 19
-program              : 2 17 0
-stmt                 : 1 2
-target               : 15
-term                 : 22 23 24 25 26 27 28 29 30 31 32 37 38
+arg_list             : 9 10 24 25 37
+binary_op            : 22
+block                : 4 5
+expr                 : 6 7 8 11 22 22 31 37 38
+method_name          : 5
+param_list           : 5
+params               : 18 19 20
+program              : 0
+stmt                 : 2 3
+stmt_list            : 1 2 39
+term                 : 23
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (1) program -> . stmt
-    (2) program -> . program stmt
-    (3) stmt -> . CLASS ID LPAREN ID RPAREN COLON block
-    (4) stmt -> . CLASS ID COLON block
-    (5) stmt -> . DEF ID LPAREN params RPAREN COLON block
-    (6) stmt -> . DEF ID LPAREN RPAREN COLON block
-    (7) stmt -> . IMPORT import_path
-    (8) stmt -> . FROM ID IMPORT ID
-    (9) stmt -> . RETURN expr
-    (10) stmt -> . RETURN
-    (11) stmt -> . PASS
-    (12) stmt -> . IF expr COLON block ELSE COLON block
-    (13) stmt -> . IF expr COLON block
-    (14) stmt -> . WHILE expr COLON block
-    (15) stmt -> . target EQ_OP expr
-    (16) stmt -> . expr
-    (46) target -> . ID
-    (47) target -> . ID call_chain
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (1) program -> . stmt_list
+    (2) stmt_list -> . stmt stmt_list
+    (3) stmt_list -> . stmt
+    (4) stmt -> . CLASS ID COLON NEWLINE block
+    (5) stmt -> . DEF method_name LPAREN param_list RPAREN COLON NEWLINE block
+    (6) stmt -> . ID EQUALS expr NEWLINE
+    (7) stmt -> . ID DOT ID EQUALS expr NEWLINE
+    (8) stmt -> . SELF DOT ID EQUALS expr NEWLINE
+    (9) stmt -> . ID DOT ID LPAREN arg_list RPAREN NEWLINE
+    (10) stmt -> . ID LPAREN arg_list RPAREN NEWLINE
+    (11) stmt -> . RETURN expr NEWLINE
+    (12) stmt -> . RETURN NEWLINE
+    (13) stmt -> . PASS NEWLINE
 
-    CLASS           shift and go to state 3
+    CLASS           shift and go to state 4
     DEF             shift and go to state 6
-    IMPORT          shift and go to state 7
-    FROM            shift and go to state 8
-    RETURN          shift and go to state 9
-    PASS            shift and go to state 11
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    ID              shift and go to state 4
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              shift and go to state 5
+    SELF            shift and go to state 7
+    RETURN          shift and go to state 8
+    PASS            shift and go to state 9
 
     program                        shift and go to state 1
-    stmt                           shift and go to state 2
-    expr                           shift and go to state 10
-    target                         shift and go to state 14
-    term                           shift and go to state 15
+    stmt_list                      shift and go to state 2
+    stmt                           shift and go to state 3
 
 state 1
 
     (0) S' -> program .
-    (2) program -> program . stmt
-    (3) stmt -> . CLASS ID LPAREN ID RPAREN COLON block
-    (4) stmt -> . CLASS ID COLON block
-    (5) stmt -> . DEF ID LPAREN params RPAREN COLON block
-    (6) stmt -> . DEF ID LPAREN RPAREN COLON block
-    (7) stmt -> . IMPORT import_path
-    (8) stmt -> . FROM ID IMPORT ID
-    (9) stmt -> . RETURN expr
-    (10) stmt -> . RETURN
-    (11) stmt -> . PASS
-    (12) stmt -> . IF expr COLON block ELSE COLON block
-    (13) stmt -> . IF expr COLON block
-    (14) stmt -> . WHILE expr COLON block
-    (15) stmt -> . target EQ_OP expr
-    (16) stmt -> . expr
-    (46) target -> . ID
-    (47) target -> . ID call_chain
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
 
-    CLASS           shift and go to state 3
-    DEF             shift and go to state 6
-    IMPORT          shift and go to state 7
-    FROM            shift and go to state 8
-    RETURN          shift and go to state 9
-    PASS            shift and go to state 11
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    ID              shift and go to state 4
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
 
-    stmt                           shift and go to state 20
-    expr                           shift and go to state 10
-    target                         shift and go to state 14
-    term                           shift and go to state 15
 
 state 2
 
-    (1) program -> stmt .
+    (1) program -> stmt_list .
 
-    CLASS           reduce using rule 1 (program -> stmt .)
-    DEF             reduce using rule 1 (program -> stmt .)
-    IMPORT          reduce using rule 1 (program -> stmt .)
-    FROM            reduce using rule 1 (program -> stmt .)
-    RETURN          reduce using rule 1 (program -> stmt .)
-    PASS            reduce using rule 1 (program -> stmt .)
-    IF              reduce using rule 1 (program -> stmt .)
-    WHILE           reduce using rule 1 (program -> stmt .)
-    ID              reduce using rule 1 (program -> stmt .)
-    NUM             reduce using rule 1 (program -> stmt .)
-    STR             reduce using rule 1 (program -> stmt .)
-    LPAREN          reduce using rule 1 (program -> stmt .)
-    NOT             reduce using rule 1 (program -> stmt .)
-    MINUS           reduce using rule 1 (program -> stmt .)
-    $end            reduce using rule 1 (program -> stmt .)
-    ELSE            reduce using rule 1 (program -> stmt .)
+    $end            reduce using rule 1 (program -> stmt_list .)
 
 
 state 3
 
-    (3) stmt -> CLASS . ID LPAREN ID RPAREN COLON block
-    (4) stmt -> CLASS . ID COLON block
+    (2) stmt_list -> stmt . stmt_list
+    (3) stmt_list -> stmt .
+    (2) stmt_list -> . stmt stmt_list
+    (3) stmt_list -> . stmt
+    (4) stmt -> . CLASS ID COLON NEWLINE block
+    (5) stmt -> . DEF method_name LPAREN param_list RPAREN COLON NEWLINE block
+    (6) stmt -> . ID EQUALS expr NEWLINE
+    (7) stmt -> . ID DOT ID EQUALS expr NEWLINE
+    (8) stmt -> . SELF DOT ID EQUALS expr NEWLINE
+    (9) stmt -> . ID DOT ID LPAREN arg_list RPAREN NEWLINE
+    (10) stmt -> . ID LPAREN arg_list RPAREN NEWLINE
+    (11) stmt -> . RETURN expr NEWLINE
+    (12) stmt -> . RETURN NEWLINE
+    (13) stmt -> . PASS NEWLINE
 
-    ID              shift and go to state 21
+    $end            reduce using rule 3 (stmt_list -> stmt .)
+    DEDENT          reduce using rule 3 (stmt_list -> stmt .)
+    CLASS           shift and go to state 4
+    DEF             shift and go to state 6
+    ID              shift and go to state 5
+    SELF            shift and go to state 7
+    RETURN          shift and go to state 8
+    PASS            shift and go to state 9
 
+    stmt                           shift and go to state 3
+    stmt_list                      shift and go to state 10
 
 state 4
 
-    (46) target -> ID .
-    (47) target -> ID . call_chain
-    (33) term -> ID .
-    (39) term -> ID . call_chain
-    (40) call_chain -> . DOT ID
-    (41) call_chain -> . LPAREN args RPAREN
-    (42) call_chain -> . call_chain DOT ID
-    (43) call_chain -> . call_chain LPAREN args RPAREN
+    (4) stmt -> CLASS . ID COLON NEWLINE block
 
-  ! shift/reduce conflict for LPAREN resolved as shift
-    EQ_OP           reduce using rule 46 (target -> ID .)
-    PLUS            reduce using rule 33 (term -> ID .)
-    MINUS           reduce using rule 33 (term -> ID .)
-    TIMES           reduce using rule 33 (term -> ID .)
-    DIVIDE          reduce using rule 33 (term -> ID .)
-    EQ              reduce using rule 33 (term -> ID .)
-    NE              reduce using rule 33 (term -> ID .)
-    LT              reduce using rule 33 (term -> ID .)
-    GT              reduce using rule 33 (term -> ID .)
-    AND             reduce using rule 33 (term -> ID .)
-    OR              reduce using rule 33 (term -> ID .)
-    CLASS           reduce using rule 33 (term -> ID .)
-    DEF             reduce using rule 33 (term -> ID .)
-    IMPORT          reduce using rule 33 (term -> ID .)
-    FROM            reduce using rule 33 (term -> ID .)
-    RETURN          reduce using rule 33 (term -> ID .)
-    PASS            reduce using rule 33 (term -> ID .)
-    IF              reduce using rule 33 (term -> ID .)
-    WHILE           reduce using rule 33 (term -> ID .)
-    ID              reduce using rule 33 (term -> ID .)
-    NUM             reduce using rule 33 (term -> ID .)
-    STR             reduce using rule 33 (term -> ID .)
-    NOT             reduce using rule 33 (term -> ID .)
-    $end            reduce using rule 33 (term -> ID .)
-    ELSE            reduce using rule 33 (term -> ID .)
-    DOT             shift and go to state 23
-    LPAREN          shift and go to state 24
+    ID              shift and go to state 11
 
-  ! LPAREN          [ reduce using rule 33 (term -> ID .) ]
-
-    call_chain                     shift and go to state 22
 
 state 5
 
-    (36) term -> LPAREN . expr RPAREN
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (6) stmt -> ID . EQUALS expr NEWLINE
+    (7) stmt -> ID . DOT ID EQUALS expr NEWLINE
+    (9) stmt -> ID . DOT ID LPAREN arg_list RPAREN NEWLINE
+    (10) stmt -> ID . LPAREN arg_list RPAREN NEWLINE
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    EQUALS          shift and go to state 12
+    DOT             shift and go to state 13
+    LPAREN          shift and go to state 14
 
-    expr                           shift and go to state 25
-    term                           shift and go to state 15
 
 state 6
 
-    (5) stmt -> DEF . ID LPAREN params RPAREN COLON block
-    (6) stmt -> DEF . ID LPAREN RPAREN COLON block
+    (5) stmt -> DEF . method_name LPAREN param_list RPAREN COLON NEWLINE block
+    (14) method_name -> . ID
+    (15) method_name -> . INIT
 
-    ID              shift and go to state 27
+    ID              shift and go to state 16
+    INIT            shift and go to state 17
 
+    method_name                    shift and go to state 15
 
 state 7
 
-    (7) stmt -> IMPORT . import_path
-    (20) import_path -> . ID
-    (21) import_path -> . import_path DOT ID
+    (8) stmt -> SELF . DOT ID EQUALS expr NEWLINE
 
-    ID              shift and go to state 29
+    DOT             shift and go to state 18
 
-    import_path                    shift and go to state 28
 
 state 8
 
-    (8) stmt -> FROM . ID IMPORT ID
+    (11) stmt -> RETURN . expr NEWLINE
+    (12) stmt -> RETURN . NEWLINE
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 30
+    NEWLINE         shift and go to state 20
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
+    expr                           shift and go to state 19
+    term                           shift and go to state 21
 
 state 9
 
-    (9) stmt -> RETURN . expr
-    (10) stmt -> RETURN .
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (13) stmt -> PASS . NEWLINE
 
-  ! shift/reduce conflict for ID resolved as shift
-  ! shift/reduce conflict for NUM resolved as shift
-  ! shift/reduce conflict for STR resolved as shift
-  ! shift/reduce conflict for LPAREN resolved as shift
-  ! shift/reduce conflict for NOT resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-    CLASS           reduce using rule 10 (stmt -> RETURN .)
-    DEF             reduce using rule 10 (stmt -> RETURN .)
-    IMPORT          reduce using rule 10 (stmt -> RETURN .)
-    FROM            reduce using rule 10 (stmt -> RETURN .)
-    RETURN          reduce using rule 10 (stmt -> RETURN .)
-    PASS            reduce using rule 10 (stmt -> RETURN .)
-    IF              reduce using rule 10 (stmt -> RETURN .)
-    WHILE           reduce using rule 10 (stmt -> RETURN .)
-    $end            reduce using rule 10 (stmt -> RETURN .)
-    ELSE            reduce using rule 10 (stmt -> RETURN .)
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    NEWLINE         shift and go to state 27
 
-  ! ID              [ reduce using rule 10 (stmt -> RETURN .) ]
-  ! NUM             [ reduce using rule 10 (stmt -> RETURN .) ]
-  ! STR             [ reduce using rule 10 (stmt -> RETURN .) ]
-  ! LPAREN          [ reduce using rule 10 (stmt -> RETURN .) ]
-  ! NOT             [ reduce using rule 10 (stmt -> RETURN .) ]
-  ! MINUS           [ reduce using rule 10 (stmt -> RETURN .) ]
-
-    expr                           shift and go to state 31
-    term                           shift and go to state 15
 
 state 10
 
-    (16) stmt -> expr .
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (2) stmt_list -> stmt stmt_list .
 
-  ! shift/reduce conflict for MINUS resolved as shift
-    CLASS           reduce using rule 16 (stmt -> expr .)
-    DEF             reduce using rule 16 (stmt -> expr .)
-    IMPORT          reduce using rule 16 (stmt -> expr .)
-    FROM            reduce using rule 16 (stmt -> expr .)
-    RETURN          reduce using rule 16 (stmt -> expr .)
-    PASS            reduce using rule 16 (stmt -> expr .)
-    IF              reduce using rule 16 (stmt -> expr .)
-    WHILE           reduce using rule 16 (stmt -> expr .)
-    ID              reduce using rule 16 (stmt -> expr .)
-    NUM             reduce using rule 16 (stmt -> expr .)
-    STR             reduce using rule 16 (stmt -> expr .)
-    LPAREN          reduce using rule 16 (stmt -> expr .)
-    NOT             reduce using rule 16 (stmt -> expr .)
-    $end            reduce using rule 16 (stmt -> expr .)
-    ELSE            reduce using rule 16 (stmt -> expr .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
-
-  ! MINUS           [ reduce using rule 16 (stmt -> expr .) ]
+    $end            reduce using rule 2 (stmt_list -> stmt stmt_list .)
+    DEDENT          reduce using rule 2 (stmt_list -> stmt stmt_list .)
 
 
 state 11
 
-    (11) stmt -> PASS .
+    (4) stmt -> CLASS ID . COLON NEWLINE block
 
-    CLASS           reduce using rule 11 (stmt -> PASS .)
-    DEF             reduce using rule 11 (stmt -> PASS .)
-    IMPORT          reduce using rule 11 (stmt -> PASS .)
-    FROM            reduce using rule 11 (stmt -> PASS .)
-    RETURN          reduce using rule 11 (stmt -> PASS .)
-    PASS            reduce using rule 11 (stmt -> PASS .)
-    IF              reduce using rule 11 (stmt -> PASS .)
-    WHILE           reduce using rule 11 (stmt -> PASS .)
-    ID              reduce using rule 11 (stmt -> PASS .)
-    NUM             reduce using rule 11 (stmt -> PASS .)
-    STR             reduce using rule 11 (stmt -> PASS .)
-    LPAREN          reduce using rule 11 (stmt -> PASS .)
-    NOT             reduce using rule 11 (stmt -> PASS .)
-    MINUS           reduce using rule 11 (stmt -> PASS .)
-    $end            reduce using rule 11 (stmt -> PASS .)
-    ELSE            reduce using rule 11 (stmt -> PASS .)
+    COLON           shift and go to state 28
 
 
 state 12
 
-    (12) stmt -> IF . expr COLON block ELSE COLON block
-    (13) stmt -> IF . expr COLON block
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (6) stmt -> ID EQUALS . expr NEWLINE
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
-    expr                           shift and go to state 42
-    term                           shift and go to state 15
+    expr                           shift and go to state 29
+    term                           shift and go to state 21
 
 state 13
 
-    (14) stmt -> WHILE . expr COLON block
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (7) stmt -> ID DOT . ID EQUALS expr NEWLINE
+    (9) stmt -> ID DOT . ID LPAREN arg_list RPAREN NEWLINE
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              shift and go to state 30
 
-    expr                           shift and go to state 43
-    term                           shift and go to state 15
 
 state 14
 
-    (15) stmt -> target . EQ_OP expr
+    (10) stmt -> ID LPAREN . arg_list RPAREN NEWLINE
+    (36) arg_list -> .
+    (37) arg_list -> . expr COMMA arg_list
+    (38) arg_list -> . expr
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    EQ_OP           shift and go to state 44
+    RPAREN          reduce using rule 36 (arg_list -> .)
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
+    arg_list                       shift and go to state 31
+    expr                           shift and go to state 32
+    term                           shift and go to state 21
 
 state 15
 
-    (22) expr -> term .
+    (5) stmt -> DEF method_name . LPAREN param_list RPAREN COLON NEWLINE block
 
-    PLUS            reduce using rule 22 (expr -> term .)
-    MINUS           reduce using rule 22 (expr -> term .)
-    TIMES           reduce using rule 22 (expr -> term .)
-    DIVIDE          reduce using rule 22 (expr -> term .)
-    EQ              reduce using rule 22 (expr -> term .)
-    NE              reduce using rule 22 (expr -> term .)
-    LT              reduce using rule 22 (expr -> term .)
-    GT              reduce using rule 22 (expr -> term .)
-    AND             reduce using rule 22 (expr -> term .)
-    OR              reduce using rule 22 (expr -> term .)
-    CLASS           reduce using rule 22 (expr -> term .)
-    DEF             reduce using rule 22 (expr -> term .)
-    IMPORT          reduce using rule 22 (expr -> term .)
-    FROM            reduce using rule 22 (expr -> term .)
-    RETURN          reduce using rule 22 (expr -> term .)
-    PASS            reduce using rule 22 (expr -> term .)
-    IF              reduce using rule 22 (expr -> term .)
-    WHILE           reduce using rule 22 (expr -> term .)
-    ID              reduce using rule 22 (expr -> term .)
-    NUM             reduce using rule 22 (expr -> term .)
-    STR             reduce using rule 22 (expr -> term .)
-    LPAREN          reduce using rule 22 (expr -> term .)
-    NOT             reduce using rule 22 (expr -> term .)
-    $end            reduce using rule 22 (expr -> term .)
-    RPAREN          reduce using rule 22 (expr -> term .)
-    ELSE            reduce using rule 22 (expr -> term .)
-    COLON           reduce using rule 22 (expr -> term .)
-    COMMA           reduce using rule 22 (expr -> term .)
+    LPAREN          shift and go to state 33
 
 
 state 16
 
-    (38) term -> MINUS . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (14) method_name -> ID .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    LPAREN          reduce using rule 14 (method_name -> ID .)
 
-    term                           shift and go to state 45
 
 state 17
 
-    (34) term -> NUM .
+    (15) method_name -> INIT .
 
-    PLUS            reduce using rule 34 (term -> NUM .)
-    MINUS           reduce using rule 34 (term -> NUM .)
-    TIMES           reduce using rule 34 (term -> NUM .)
-    DIVIDE          reduce using rule 34 (term -> NUM .)
-    EQ              reduce using rule 34 (term -> NUM .)
-    NE              reduce using rule 34 (term -> NUM .)
-    LT              reduce using rule 34 (term -> NUM .)
-    GT              reduce using rule 34 (term -> NUM .)
-    AND             reduce using rule 34 (term -> NUM .)
-    OR              reduce using rule 34 (term -> NUM .)
-    CLASS           reduce using rule 34 (term -> NUM .)
-    DEF             reduce using rule 34 (term -> NUM .)
-    IMPORT          reduce using rule 34 (term -> NUM .)
-    FROM            reduce using rule 34 (term -> NUM .)
-    RETURN          reduce using rule 34 (term -> NUM .)
-    PASS            reduce using rule 34 (term -> NUM .)
-    IF              reduce using rule 34 (term -> NUM .)
-    WHILE           reduce using rule 34 (term -> NUM .)
-    ID              reduce using rule 34 (term -> NUM .)
-    NUM             reduce using rule 34 (term -> NUM .)
-    STR             reduce using rule 34 (term -> NUM .)
-    LPAREN          reduce using rule 34 (term -> NUM .)
-    NOT             reduce using rule 34 (term -> NUM .)
-    $end            reduce using rule 34 (term -> NUM .)
-    RPAREN          reduce using rule 34 (term -> NUM .)
-    ELSE            reduce using rule 34 (term -> NUM .)
-    COLON           reduce using rule 34 (term -> NUM .)
-    COMMA           reduce using rule 34 (term -> NUM .)
+    LPAREN          reduce using rule 15 (method_name -> INIT .)
 
 
 state 18
 
-    (35) term -> STR .
+    (8) stmt -> SELF DOT . ID EQUALS expr NEWLINE
 
-    PLUS            reduce using rule 35 (term -> STR .)
-    MINUS           reduce using rule 35 (term -> STR .)
-    TIMES           reduce using rule 35 (term -> STR .)
-    DIVIDE          reduce using rule 35 (term -> STR .)
-    EQ              reduce using rule 35 (term -> STR .)
-    NE              reduce using rule 35 (term -> STR .)
-    LT              reduce using rule 35 (term -> STR .)
-    GT              reduce using rule 35 (term -> STR .)
-    AND             reduce using rule 35 (term -> STR .)
-    OR              reduce using rule 35 (term -> STR .)
-    CLASS           reduce using rule 35 (term -> STR .)
-    DEF             reduce using rule 35 (term -> STR .)
-    IMPORT          reduce using rule 35 (term -> STR .)
-    FROM            reduce using rule 35 (term -> STR .)
-    RETURN          reduce using rule 35 (term -> STR .)
-    PASS            reduce using rule 35 (term -> STR .)
-    IF              reduce using rule 35 (term -> STR .)
-    WHILE           reduce using rule 35 (term -> STR .)
-    ID              reduce using rule 35 (term -> STR .)
-    NUM             reduce using rule 35 (term -> STR .)
-    STR             reduce using rule 35 (term -> STR .)
-    LPAREN          reduce using rule 35 (term -> STR .)
-    NOT             reduce using rule 35 (term -> STR .)
-    $end            reduce using rule 35 (term -> STR .)
-    RPAREN          reduce using rule 35 (term -> STR .)
-    ELSE            reduce using rule 35 (term -> STR .)
-    COLON           reduce using rule 35 (term -> STR .)
-    COMMA           reduce using rule 35 (term -> STR .)
+    ID              shift and go to state 34
 
 
 state 19
 
-    (37) term -> NOT . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (11) stmt -> RETURN expr . NEWLINE
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    NEWLINE         shift and go to state 35
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
-    term                           shift and go to state 46
+    binary_op                      shift and go to state 36
 
 state 20
 
-    (2) program -> program stmt .
+    (12) stmt -> RETURN NEWLINE .
 
-    CLASS           reduce using rule 2 (program -> program stmt .)
-    DEF             reduce using rule 2 (program -> program stmt .)
-    IMPORT          reduce using rule 2 (program -> program stmt .)
-    FROM            reduce using rule 2 (program -> program stmt .)
-    RETURN          reduce using rule 2 (program -> program stmt .)
-    PASS            reduce using rule 2 (program -> program stmt .)
-    IF              reduce using rule 2 (program -> program stmt .)
-    WHILE           reduce using rule 2 (program -> program stmt .)
-    ID              reduce using rule 2 (program -> program stmt .)
-    NUM             reduce using rule 2 (program -> program stmt .)
-    STR             reduce using rule 2 (program -> program stmt .)
-    LPAREN          reduce using rule 2 (program -> program stmt .)
-    NOT             reduce using rule 2 (program -> program stmt .)
-    MINUS           reduce using rule 2 (program -> program stmt .)
-    $end            reduce using rule 2 (program -> program stmt .)
-    ELSE            reduce using rule 2 (program -> program stmt .)
+    CLASS           reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    DEF             reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    ID              reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    SELF            reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    RETURN          reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    PASS            reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    $end            reduce using rule 12 (stmt -> RETURN NEWLINE .)
+    DEDENT          reduce using rule 12 (stmt -> RETURN NEWLINE .)
 
 
 state 21
 
-    (3) stmt -> CLASS ID . LPAREN ID RPAREN COLON block
-    (4) stmt -> CLASS ID . COLON block
+    (23) expr -> term .
 
-    LPAREN          shift and go to state 47
-    COLON           shift and go to state 48
+    NEWLINE         reduce using rule 23 (expr -> term .)
+    PLUS            reduce using rule 23 (expr -> term .)
+    MINUS           reduce using rule 23 (expr -> term .)
+    MUL             reduce using rule 23 (expr -> term .)
+    DIV             reduce using rule 23 (expr -> term .)
+    COMMA           reduce using rule 23 (expr -> term .)
+    RPAREN          reduce using rule 23 (expr -> term .)
 
 
 state 22
 
-    (47) target -> ID call_chain .
-    (39) term -> ID call_chain .
-    (42) call_chain -> call_chain . DOT ID
-    (43) call_chain -> call_chain . LPAREN args RPAREN
+    (25) expr -> ID . LPAREN arg_list RPAREN
+    (24) term -> ID . LPAREN arg_list RPAREN
+    (27) term -> ID . DOT ID
+    (28) term -> ID .
 
-  ! shift/reduce conflict for LPAREN resolved as shift
-    EQ_OP           reduce using rule 47 (target -> ID call_chain .)
-    PLUS            reduce using rule 39 (term -> ID call_chain .)
-    MINUS           reduce using rule 39 (term -> ID call_chain .)
-    TIMES           reduce using rule 39 (term -> ID call_chain .)
-    DIVIDE          reduce using rule 39 (term -> ID call_chain .)
-    EQ              reduce using rule 39 (term -> ID call_chain .)
-    NE              reduce using rule 39 (term -> ID call_chain .)
-    LT              reduce using rule 39 (term -> ID call_chain .)
-    GT              reduce using rule 39 (term -> ID call_chain .)
-    AND             reduce using rule 39 (term -> ID call_chain .)
-    OR              reduce using rule 39 (term -> ID call_chain .)
-    CLASS           reduce using rule 39 (term -> ID call_chain .)
-    DEF             reduce using rule 39 (term -> ID call_chain .)
-    IMPORT          reduce using rule 39 (term -> ID call_chain .)
-    FROM            reduce using rule 39 (term -> ID call_chain .)
-    RETURN          reduce using rule 39 (term -> ID call_chain .)
-    PASS            reduce using rule 39 (term -> ID call_chain .)
-    IF              reduce using rule 39 (term -> ID call_chain .)
-    WHILE           reduce using rule 39 (term -> ID call_chain .)
-    ID              reduce using rule 39 (term -> ID call_chain .)
-    NUM             reduce using rule 39 (term -> ID call_chain .)
-    STR             reduce using rule 39 (term -> ID call_chain .)
-    NOT             reduce using rule 39 (term -> ID call_chain .)
-    $end            reduce using rule 39 (term -> ID call_chain .)
-    ELSE            reduce using rule 39 (term -> ID call_chain .)
-    DOT             shift and go to state 49
-    LPAREN          shift and go to state 50
-
-  ! LPAREN          [ reduce using rule 39 (term -> ID call_chain .) ]
+    LPAREN          shift and go to state 41
+    DOT             shift and go to state 42
+    NEWLINE         reduce using rule 28 (term -> ID .)
+    PLUS            reduce using rule 28 (term -> ID .)
+    MINUS           reduce using rule 28 (term -> ID .)
+    MUL             reduce using rule 28 (term -> ID .)
+    DIV             reduce using rule 28 (term -> ID .)
+    COMMA           reduce using rule 28 (term -> ID .)
+    RPAREN          reduce using rule 28 (term -> ID .)
 
 
 state 23
 
-    (40) call_chain -> DOT . ID
+    (31) term -> LPAREN . expr RPAREN
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 51
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
+    expr                           shift and go to state 43
+    term                           shift and go to state 21
 
 state 24
 
-    (41) call_chain -> LPAREN . args RPAREN
-    (44) args -> . expr
-    (45) args -> . args COMMA expr
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (26) term -> SELF . DOT ID
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    DOT             shift and go to state 44
 
-    args                           shift and go to state 52
-    expr                           shift and go to state 53
-    term                           shift and go to state 15
 
 state 25
 
-    (36) term -> LPAREN expr . RPAREN
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (29) term -> NUMBER .
 
-    RPAREN          shift and go to state 54
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
+    NEWLINE         reduce using rule 29 (term -> NUMBER .)
+    PLUS            reduce using rule 29 (term -> NUMBER .)
+    MINUS           reduce using rule 29 (term -> NUMBER .)
+    MUL             reduce using rule 29 (term -> NUMBER .)
+    DIV             reduce using rule 29 (term -> NUMBER .)
+    COMMA           reduce using rule 29 (term -> NUMBER .)
+    RPAREN          reduce using rule 29 (term -> NUMBER .)
 
 
 state 26
 
-    (33) term -> ID .
-    (39) term -> ID . call_chain
-    (40) call_chain -> . DOT ID
-    (41) call_chain -> . LPAREN args RPAREN
-    (42) call_chain -> . call_chain DOT ID
-    (43) call_chain -> . call_chain LPAREN args RPAREN
+    (30) term -> STRING .
 
-  ! shift/reduce conflict for LPAREN resolved as shift
-    RPAREN          reduce using rule 33 (term -> ID .)
-    PLUS            reduce using rule 33 (term -> ID .)
-    MINUS           reduce using rule 33 (term -> ID .)
-    TIMES           reduce using rule 33 (term -> ID .)
-    DIVIDE          reduce using rule 33 (term -> ID .)
-    EQ              reduce using rule 33 (term -> ID .)
-    NE              reduce using rule 33 (term -> ID .)
-    LT              reduce using rule 33 (term -> ID .)
-    GT              reduce using rule 33 (term -> ID .)
-    AND             reduce using rule 33 (term -> ID .)
-    OR              reduce using rule 33 (term -> ID .)
-    CLASS           reduce using rule 33 (term -> ID .)
-    DEF             reduce using rule 33 (term -> ID .)
-    IMPORT          reduce using rule 33 (term -> ID .)
-    FROM            reduce using rule 33 (term -> ID .)
-    RETURN          reduce using rule 33 (term -> ID .)
-    PASS            reduce using rule 33 (term -> ID .)
-    IF              reduce using rule 33 (term -> ID .)
-    WHILE           reduce using rule 33 (term -> ID .)
-    ID              reduce using rule 33 (term -> ID .)
-    NUM             reduce using rule 33 (term -> ID .)
-    STR             reduce using rule 33 (term -> ID .)
-    NOT             reduce using rule 33 (term -> ID .)
-    $end            reduce using rule 33 (term -> ID .)
-    ELSE            reduce using rule 33 (term -> ID .)
-    COLON           reduce using rule 33 (term -> ID .)
-    COMMA           reduce using rule 33 (term -> ID .)
-    DOT             shift and go to state 23
-    LPAREN          shift and go to state 24
+    NEWLINE         reduce using rule 30 (term -> STRING .)
+    PLUS            reduce using rule 30 (term -> STRING .)
+    MINUS           reduce using rule 30 (term -> STRING .)
+    MUL             reduce using rule 30 (term -> STRING .)
+    DIV             reduce using rule 30 (term -> STRING .)
+    COMMA           reduce using rule 30 (term -> STRING .)
+    RPAREN          reduce using rule 30 (term -> STRING .)
 
-  ! LPAREN          [ reduce using rule 33 (term -> ID .) ]
-
-    call_chain                     shift and go to state 55
 
 state 27
 
-    (5) stmt -> DEF ID . LPAREN params RPAREN COLON block
-    (6) stmt -> DEF ID . LPAREN RPAREN COLON block
+    (13) stmt -> PASS NEWLINE .
 
-    LPAREN          shift and go to state 56
+    CLASS           reduce using rule 13 (stmt -> PASS NEWLINE .)
+    DEF             reduce using rule 13 (stmt -> PASS NEWLINE .)
+    ID              reduce using rule 13 (stmt -> PASS NEWLINE .)
+    SELF            reduce using rule 13 (stmt -> PASS NEWLINE .)
+    RETURN          reduce using rule 13 (stmt -> PASS NEWLINE .)
+    PASS            reduce using rule 13 (stmt -> PASS NEWLINE .)
+    $end            reduce using rule 13 (stmt -> PASS NEWLINE .)
+    DEDENT          reduce using rule 13 (stmt -> PASS NEWLINE .)
 
 
 state 28
 
-    (7) stmt -> IMPORT import_path .
-    (21) import_path -> import_path . DOT ID
+    (4) stmt -> CLASS ID COLON . NEWLINE block
 
-    CLASS           reduce using rule 7 (stmt -> IMPORT import_path .)
-    DEF             reduce using rule 7 (stmt -> IMPORT import_path .)
-    IMPORT          reduce using rule 7 (stmt -> IMPORT import_path .)
-    FROM            reduce using rule 7 (stmt -> IMPORT import_path .)
-    RETURN          reduce using rule 7 (stmt -> IMPORT import_path .)
-    PASS            reduce using rule 7 (stmt -> IMPORT import_path .)
-    IF              reduce using rule 7 (stmt -> IMPORT import_path .)
-    WHILE           reduce using rule 7 (stmt -> IMPORT import_path .)
-    ID              reduce using rule 7 (stmt -> IMPORT import_path .)
-    NUM             reduce using rule 7 (stmt -> IMPORT import_path .)
-    STR             reduce using rule 7 (stmt -> IMPORT import_path .)
-    LPAREN          reduce using rule 7 (stmt -> IMPORT import_path .)
-    NOT             reduce using rule 7 (stmt -> IMPORT import_path .)
-    MINUS           reduce using rule 7 (stmt -> IMPORT import_path .)
-    $end            reduce using rule 7 (stmt -> IMPORT import_path .)
-    ELSE            reduce using rule 7 (stmt -> IMPORT import_path .)
-    DOT             shift and go to state 57
+    NEWLINE         shift and go to state 45
 
 
 state 29
 
-    (20) import_path -> ID .
+    (6) stmt -> ID EQUALS expr . NEWLINE
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    DOT             reduce using rule 20 (import_path -> ID .)
-    CLASS           reduce using rule 20 (import_path -> ID .)
-    DEF             reduce using rule 20 (import_path -> ID .)
-    IMPORT          reduce using rule 20 (import_path -> ID .)
-    FROM            reduce using rule 20 (import_path -> ID .)
-    RETURN          reduce using rule 20 (import_path -> ID .)
-    PASS            reduce using rule 20 (import_path -> ID .)
-    IF              reduce using rule 20 (import_path -> ID .)
-    WHILE           reduce using rule 20 (import_path -> ID .)
-    ID              reduce using rule 20 (import_path -> ID .)
-    NUM             reduce using rule 20 (import_path -> ID .)
-    STR             reduce using rule 20 (import_path -> ID .)
-    LPAREN          reduce using rule 20 (import_path -> ID .)
-    NOT             reduce using rule 20 (import_path -> ID .)
-    MINUS           reduce using rule 20 (import_path -> ID .)
-    $end            reduce using rule 20 (import_path -> ID .)
-    ELSE            reduce using rule 20 (import_path -> ID .)
+    NEWLINE         shift and go to state 46
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
+    binary_op                      shift and go to state 36
 
 state 30
 
-    (8) stmt -> FROM ID . IMPORT ID
+    (7) stmt -> ID DOT ID . EQUALS expr NEWLINE
+    (9) stmt -> ID DOT ID . LPAREN arg_list RPAREN NEWLINE
 
-    IMPORT          shift and go to state 58
+    EQUALS          shift and go to state 47
+    LPAREN          shift and go to state 48
 
 
 state 31
 
-    (9) stmt -> RETURN expr .
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (10) stmt -> ID LPAREN arg_list . RPAREN NEWLINE
 
-  ! shift/reduce conflict for MINUS resolved as shift
-    CLASS           reduce using rule 9 (stmt -> RETURN expr .)
-    DEF             reduce using rule 9 (stmt -> RETURN expr .)
-    IMPORT          reduce using rule 9 (stmt -> RETURN expr .)
-    FROM            reduce using rule 9 (stmt -> RETURN expr .)
-    RETURN          reduce using rule 9 (stmt -> RETURN expr .)
-    PASS            reduce using rule 9 (stmt -> RETURN expr .)
-    IF              reduce using rule 9 (stmt -> RETURN expr .)
-    WHILE           reduce using rule 9 (stmt -> RETURN expr .)
-    ID              reduce using rule 9 (stmt -> RETURN expr .)
-    NUM             reduce using rule 9 (stmt -> RETURN expr .)
-    STR             reduce using rule 9 (stmt -> RETURN expr .)
-    LPAREN          reduce using rule 9 (stmt -> RETURN expr .)
-    NOT             reduce using rule 9 (stmt -> RETURN expr .)
-    $end            reduce using rule 9 (stmt -> RETURN expr .)
-    ELSE            reduce using rule 9 (stmt -> RETURN expr .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
-
-  ! MINUS           [ reduce using rule 9 (stmt -> RETURN expr .) ]
+    RPAREN          shift and go to state 49
 
 
 state 32
 
-    (23) expr -> expr PLUS . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (37) arg_list -> expr . COMMA arg_list
+    (38) arg_list -> expr .
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    COMMA           shift and go to state 50
+    RPAREN          reduce using rule 38 (arg_list -> expr .)
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
-    term                           shift and go to state 59
+    binary_op                      shift and go to state 36
 
 state 33
 
-    (24) expr -> expr MINUS . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (5) stmt -> DEF method_name LPAREN . param_list RPAREN COLON NEWLINE block
+    (16) param_list -> .
+    (17) param_list -> . SELF
+    (18) param_list -> . SELF COMMA params
+    (19) param_list -> . params
+    (20) params -> . ID COMMA params
+    (21) params -> . ID
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    RPAREN          reduce using rule 16 (param_list -> .)
+    SELF            shift and go to state 52
+    ID              shift and go to state 54
 
-    term                           shift and go to state 60
+    param_list                     shift and go to state 51
+    params                         shift and go to state 53
 
 state 34
 
-    (25) expr -> expr TIMES . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (8) stmt -> SELF DOT ID . EQUALS expr NEWLINE
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    EQUALS          shift and go to state 55
 
-    term                           shift and go to state 61
 
 state 35
 
-    (26) expr -> expr DIVIDE . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (11) stmt -> RETURN expr NEWLINE .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    CLASS           reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    DEF             reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    ID              reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    SELF            reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    RETURN          reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    PASS            reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    $end            reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
+    DEDENT          reduce using rule 11 (stmt -> RETURN expr NEWLINE .)
 
-    term                           shift and go to state 62
 
 state 36
 
-    (27) expr -> expr EQ . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (22) expr -> expr binary_op . expr
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
-    term                           shift and go to state 63
+    expr                           shift and go to state 56
+    term                           shift and go to state 21
 
 state 37
 
-    (28) expr -> expr NE . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (32) binary_op -> PLUS .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              reduce using rule 32 (binary_op -> PLUS .)
+    SELF            reduce using rule 32 (binary_op -> PLUS .)
+    NUMBER          reduce using rule 32 (binary_op -> PLUS .)
+    STRING          reduce using rule 32 (binary_op -> PLUS .)
+    LPAREN          reduce using rule 32 (binary_op -> PLUS .)
 
-    term                           shift and go to state 64
 
 state 38
 
-    (29) expr -> expr LT . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (33) binary_op -> MINUS .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              reduce using rule 33 (binary_op -> MINUS .)
+    SELF            reduce using rule 33 (binary_op -> MINUS .)
+    NUMBER          reduce using rule 33 (binary_op -> MINUS .)
+    STRING          reduce using rule 33 (binary_op -> MINUS .)
+    LPAREN          reduce using rule 33 (binary_op -> MINUS .)
 
-    term                           shift and go to state 65
 
 state 39
 
-    (30) expr -> expr GT . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (34) binary_op -> MUL .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              reduce using rule 34 (binary_op -> MUL .)
+    SELF            reduce using rule 34 (binary_op -> MUL .)
+    NUMBER          reduce using rule 34 (binary_op -> MUL .)
+    STRING          reduce using rule 34 (binary_op -> MUL .)
+    LPAREN          reduce using rule 34 (binary_op -> MUL .)
 
-    term                           shift and go to state 66
 
 state 40
 
-    (31) expr -> expr AND . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (35) binary_op -> DIV .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              reduce using rule 35 (binary_op -> DIV .)
+    SELF            reduce using rule 35 (binary_op -> DIV .)
+    NUMBER          reduce using rule 35 (binary_op -> DIV .)
+    STRING          reduce using rule 35 (binary_op -> DIV .)
+    LPAREN          reduce using rule 35 (binary_op -> DIV .)
 
-    term                           shift and go to state 67
 
 state 41
 
-    (32) expr -> expr OR . term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (25) expr -> ID LPAREN . arg_list RPAREN
+    (24) term -> ID LPAREN . arg_list RPAREN
+    (36) arg_list -> .
+    (37) arg_list -> . expr COMMA arg_list
+    (38) arg_list -> . expr
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    RPAREN          reduce using rule 36 (arg_list -> .)
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
-    term                           shift and go to state 68
+    arg_list                       shift and go to state 57
+    expr                           shift and go to state 32
+    term                           shift and go to state 21
 
 state 42
 
-    (12) stmt -> IF expr . COLON block ELSE COLON block
-    (13) stmt -> IF expr . COLON block
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (27) term -> ID DOT . ID
 
-    COLON           shift and go to state 69
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
+    ID              shift and go to state 58
 
 
 state 43
 
-    (14) stmt -> WHILE expr . COLON block
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (31) term -> LPAREN expr . RPAREN
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    COLON           shift and go to state 70
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
+    RPAREN          shift and go to state 59
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
+    binary_op                      shift and go to state 36
 
 state 44
 
-    (15) stmt -> target EQ_OP . expr
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (26) term -> SELF DOT . ID
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    ID              shift and go to state 60
 
-    expr                           shift and go to state 71
-    term                           shift and go to state 15
 
 state 45
 
-    (38) term -> MINUS term .
+    (4) stmt -> CLASS ID COLON NEWLINE . block
+    (39) block -> . INDENT stmt_list DEDENT
 
-    PLUS            reduce using rule 38 (term -> MINUS term .)
-    MINUS           reduce using rule 38 (term -> MINUS term .)
-    TIMES           reduce using rule 38 (term -> MINUS term .)
-    DIVIDE          reduce using rule 38 (term -> MINUS term .)
-    EQ              reduce using rule 38 (term -> MINUS term .)
-    NE              reduce using rule 38 (term -> MINUS term .)
-    LT              reduce using rule 38 (term -> MINUS term .)
-    GT              reduce using rule 38 (term -> MINUS term .)
-    AND             reduce using rule 38 (term -> MINUS term .)
-    OR              reduce using rule 38 (term -> MINUS term .)
-    CLASS           reduce using rule 38 (term -> MINUS term .)
-    DEF             reduce using rule 38 (term -> MINUS term .)
-    IMPORT          reduce using rule 38 (term -> MINUS term .)
-    FROM            reduce using rule 38 (term -> MINUS term .)
-    RETURN          reduce using rule 38 (term -> MINUS term .)
-    PASS            reduce using rule 38 (term -> MINUS term .)
-    IF              reduce using rule 38 (term -> MINUS term .)
-    WHILE           reduce using rule 38 (term -> MINUS term .)
-    ID              reduce using rule 38 (term -> MINUS term .)
-    NUM             reduce using rule 38 (term -> MINUS term .)
-    STR             reduce using rule 38 (term -> MINUS term .)
-    LPAREN          reduce using rule 38 (term -> MINUS term .)
-    NOT             reduce using rule 38 (term -> MINUS term .)
-    $end            reduce using rule 38 (term -> MINUS term .)
-    RPAREN          reduce using rule 38 (term -> MINUS term .)
-    ELSE            reduce using rule 38 (term -> MINUS term .)
-    COLON           reduce using rule 38 (term -> MINUS term .)
-    COMMA           reduce using rule 38 (term -> MINUS term .)
+    INDENT          shift and go to state 62
 
+    block                          shift and go to state 61
 
 state 46
 
-    (37) term -> NOT term .
+    (6) stmt -> ID EQUALS expr NEWLINE .
 
-    PLUS            reduce using rule 37 (term -> NOT term .)
-    MINUS           reduce using rule 37 (term -> NOT term .)
-    TIMES           reduce using rule 37 (term -> NOT term .)
-    DIVIDE          reduce using rule 37 (term -> NOT term .)
-    EQ              reduce using rule 37 (term -> NOT term .)
-    NE              reduce using rule 37 (term -> NOT term .)
-    LT              reduce using rule 37 (term -> NOT term .)
-    GT              reduce using rule 37 (term -> NOT term .)
-    AND             reduce using rule 37 (term -> NOT term .)
-    OR              reduce using rule 37 (term -> NOT term .)
-    CLASS           reduce using rule 37 (term -> NOT term .)
-    DEF             reduce using rule 37 (term -> NOT term .)
-    IMPORT          reduce using rule 37 (term -> NOT term .)
-    FROM            reduce using rule 37 (term -> NOT term .)
-    RETURN          reduce using rule 37 (term -> NOT term .)
-    PASS            reduce using rule 37 (term -> NOT term .)
-    IF              reduce using rule 37 (term -> NOT term .)
-    WHILE           reduce using rule 37 (term -> NOT term .)
-    ID              reduce using rule 37 (term -> NOT term .)
-    NUM             reduce using rule 37 (term -> NOT term .)
-    STR             reduce using rule 37 (term -> NOT term .)
-    LPAREN          reduce using rule 37 (term -> NOT term .)
-    NOT             reduce using rule 37 (term -> NOT term .)
-    $end            reduce using rule 37 (term -> NOT term .)
-    RPAREN          reduce using rule 37 (term -> NOT term .)
-    ELSE            reduce using rule 37 (term -> NOT term .)
-    COLON           reduce using rule 37 (term -> NOT term .)
-    COMMA           reduce using rule 37 (term -> NOT term .)
+    CLASS           reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    DEF             reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    ID              reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    SELF            reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    RETURN          reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    PASS            reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    $end            reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
+    DEDENT          reduce using rule 6 (stmt -> ID EQUALS expr NEWLINE .)
 
 
 state 47
 
-    (3) stmt -> CLASS ID LPAREN . ID RPAREN COLON block
+    (7) stmt -> ID DOT ID EQUALS . expr NEWLINE
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 72
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
+    expr                           shift and go to state 63
+    term                           shift and go to state 21
 
 state 48
 
-    (4) stmt -> CLASS ID COLON . block
-    (17) block -> . NEWLINE program
+    (9) stmt -> ID DOT ID LPAREN . arg_list RPAREN NEWLINE
+    (36) arg_list -> .
+    (37) arg_list -> . expr COMMA arg_list
+    (38) arg_list -> . expr
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    NEWLINE         shift and go to state 74
+    RPAREN          reduce using rule 36 (arg_list -> .)
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
-    block                          shift and go to state 73
+    arg_list                       shift and go to state 64
+    expr                           shift and go to state 32
+    term                           shift and go to state 21
 
 state 49
 
-    (42) call_chain -> call_chain DOT . ID
+    (10) stmt -> ID LPAREN arg_list RPAREN . NEWLINE
 
-    ID              shift and go to state 75
+    NEWLINE         shift and go to state 65
 
 
 state 50
 
-    (43) call_chain -> call_chain LPAREN . args RPAREN
-    (44) args -> . expr
-    (45) args -> . args COMMA expr
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (37) arg_list -> expr COMMA . arg_list
+    (36) arg_list -> .
+    (37) arg_list -> . expr COMMA arg_list
+    (38) arg_list -> . expr
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    RPAREN          reduce using rule 36 (arg_list -> .)
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
-    args                           shift and go to state 76
-    expr                           shift and go to state 53
-    term                           shift and go to state 15
+    expr                           shift and go to state 32
+    arg_list                       shift and go to state 66
+    term                           shift and go to state 21
 
 state 51
 
-    (40) call_chain -> DOT ID .
+    (5) stmt -> DEF method_name LPAREN param_list . RPAREN COLON NEWLINE block
 
-    DOT             reduce using rule 40 (call_chain -> DOT ID .)
-    LPAREN          reduce using rule 40 (call_chain -> DOT ID .)
-    EQ_OP           reduce using rule 40 (call_chain -> DOT ID .)
-    PLUS            reduce using rule 40 (call_chain -> DOT ID .)
-    MINUS           reduce using rule 40 (call_chain -> DOT ID .)
-    TIMES           reduce using rule 40 (call_chain -> DOT ID .)
-    DIVIDE          reduce using rule 40 (call_chain -> DOT ID .)
-    EQ              reduce using rule 40 (call_chain -> DOT ID .)
-    NE              reduce using rule 40 (call_chain -> DOT ID .)
-    LT              reduce using rule 40 (call_chain -> DOT ID .)
-    GT              reduce using rule 40 (call_chain -> DOT ID .)
-    AND             reduce using rule 40 (call_chain -> DOT ID .)
-    OR              reduce using rule 40 (call_chain -> DOT ID .)
-    CLASS           reduce using rule 40 (call_chain -> DOT ID .)
-    DEF             reduce using rule 40 (call_chain -> DOT ID .)
-    IMPORT          reduce using rule 40 (call_chain -> DOT ID .)
-    FROM            reduce using rule 40 (call_chain -> DOT ID .)
-    RETURN          reduce using rule 40 (call_chain -> DOT ID .)
-    PASS            reduce using rule 40 (call_chain -> DOT ID .)
-    IF              reduce using rule 40 (call_chain -> DOT ID .)
-    WHILE           reduce using rule 40 (call_chain -> DOT ID .)
-    ID              reduce using rule 40 (call_chain -> DOT ID .)
-    NUM             reduce using rule 40 (call_chain -> DOT ID .)
-    STR             reduce using rule 40 (call_chain -> DOT ID .)
-    NOT             reduce using rule 40 (call_chain -> DOT ID .)
-    $end            reduce using rule 40 (call_chain -> DOT ID .)
-    ELSE            reduce using rule 40 (call_chain -> DOT ID .)
-    RPAREN          reduce using rule 40 (call_chain -> DOT ID .)
-    COLON           reduce using rule 40 (call_chain -> DOT ID .)
-    COMMA           reduce using rule 40 (call_chain -> DOT ID .)
+    RPAREN          shift and go to state 67
 
 
 state 52
 
-    (41) call_chain -> LPAREN args . RPAREN
-    (45) args -> args . COMMA expr
+    (17) param_list -> SELF .
+    (18) param_list -> SELF . COMMA params
 
-    RPAREN          shift and go to state 77
-    COMMA           shift and go to state 78
+    RPAREN          reduce using rule 17 (param_list -> SELF .)
+    COMMA           shift and go to state 68
 
 
 state 53
 
-    (44) args -> expr .
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (19) param_list -> params .
 
-    RPAREN          reduce using rule 44 (args -> expr .)
-    COMMA           reduce using rule 44 (args -> expr .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
+    RPAREN          reduce using rule 19 (param_list -> params .)
 
 
 state 54
 
-    (36) term -> LPAREN expr RPAREN .
+    (20) params -> ID . COMMA params
+    (21) params -> ID .
 
-    PLUS            reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    MINUS           reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    TIMES           reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    DIVIDE          reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    EQ              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    NE              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    LT              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    GT              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    AND             reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    OR              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    CLASS           reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    DEF             reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    IMPORT          reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    FROM            reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    RETURN          reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    PASS            reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    IF              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    WHILE           reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    ID              reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    NUM             reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    STR             reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    LPAREN          reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    NOT             reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    $end            reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    RPAREN          reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    ELSE            reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    COLON           reduce using rule 36 (term -> LPAREN expr RPAREN .)
-    COMMA           reduce using rule 36 (term -> LPAREN expr RPAREN .)
+    COMMA           shift and go to state 69
+    RPAREN          reduce using rule 21 (params -> ID .)
 
 
 state 55
 
-    (39) term -> ID call_chain .
-    (42) call_chain -> call_chain . DOT ID
-    (43) call_chain -> call_chain . LPAREN args RPAREN
+    (8) stmt -> SELF DOT ID EQUALS . expr NEWLINE
+    (22) expr -> . expr binary_op expr
+    (23) expr -> . term
+    (25) expr -> . ID LPAREN arg_list RPAREN
+    (24) term -> . ID LPAREN arg_list RPAREN
+    (26) term -> . SELF DOT ID
+    (27) term -> . ID DOT ID
+    (28) term -> . ID
+    (29) term -> . NUMBER
+    (30) term -> . STRING
+    (31) term -> . LPAREN expr RPAREN
 
-  ! shift/reduce conflict for LPAREN resolved as shift
-    RPAREN          reduce using rule 39 (term -> ID call_chain .)
-    PLUS            reduce using rule 39 (term -> ID call_chain .)
-    MINUS           reduce using rule 39 (term -> ID call_chain .)
-    TIMES           reduce using rule 39 (term -> ID call_chain .)
-    DIVIDE          reduce using rule 39 (term -> ID call_chain .)
-    EQ              reduce using rule 39 (term -> ID call_chain .)
-    NE              reduce using rule 39 (term -> ID call_chain .)
-    LT              reduce using rule 39 (term -> ID call_chain .)
-    GT              reduce using rule 39 (term -> ID call_chain .)
-    AND             reduce using rule 39 (term -> ID call_chain .)
-    OR              reduce using rule 39 (term -> ID call_chain .)
-    CLASS           reduce using rule 39 (term -> ID call_chain .)
-    DEF             reduce using rule 39 (term -> ID call_chain .)
-    IMPORT          reduce using rule 39 (term -> ID call_chain .)
-    FROM            reduce using rule 39 (term -> ID call_chain .)
-    RETURN          reduce using rule 39 (term -> ID call_chain .)
-    PASS            reduce using rule 39 (term -> ID call_chain .)
-    IF              reduce using rule 39 (term -> ID call_chain .)
-    WHILE           reduce using rule 39 (term -> ID call_chain .)
-    ID              reduce using rule 39 (term -> ID call_chain .)
-    NUM             reduce using rule 39 (term -> ID call_chain .)
-    STR             reduce using rule 39 (term -> ID call_chain .)
-    NOT             reduce using rule 39 (term -> ID call_chain .)
-    $end            reduce using rule 39 (term -> ID call_chain .)
-    ELSE            reduce using rule 39 (term -> ID call_chain .)
-    COLON           reduce using rule 39 (term -> ID call_chain .)
-    COMMA           reduce using rule 39 (term -> ID call_chain .)
-    DOT             shift and go to state 49
-    LPAREN          shift and go to state 50
+    ID              shift and go to state 22
+    SELF            shift and go to state 24
+    NUMBER          shift and go to state 25
+    STRING          shift and go to state 26
+    LPAREN          shift and go to state 23
 
-  ! LPAREN          [ reduce using rule 39 (term -> ID call_chain .) ]
-
+    expr                           shift and go to state 70
+    term                           shift and go to state 21
 
 state 56
 
-    (5) stmt -> DEF ID LPAREN . params RPAREN COLON block
-    (6) stmt -> DEF ID LPAREN . RPAREN COLON block
-    (18) params -> . ID
-    (19) params -> . params COMMA ID
+    (22) expr -> expr binary_op expr .
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    RPAREN          shift and go to state 81
-    ID              shift and go to state 79
+  ! shift/reduce conflict for PLUS resolved as shift
+  ! shift/reduce conflict for MINUS resolved as shift
+  ! shift/reduce conflict for MUL resolved as shift
+  ! shift/reduce conflict for DIV resolved as shift
+    NEWLINE         reduce using rule 22 (expr -> expr binary_op expr .)
+    COMMA           reduce using rule 22 (expr -> expr binary_op expr .)
+    RPAREN          reduce using rule 22 (expr -> expr binary_op expr .)
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
-    params                         shift and go to state 80
+  ! PLUS            [ reduce using rule 22 (expr -> expr binary_op expr .) ]
+  ! MINUS           [ reduce using rule 22 (expr -> expr binary_op expr .) ]
+  ! MUL             [ reduce using rule 22 (expr -> expr binary_op expr .) ]
+  ! DIV             [ reduce using rule 22 (expr -> expr binary_op expr .) ]
+
+    binary_op                      shift and go to state 36
 
 state 57
 
-    (21) import_path -> import_path DOT . ID
+    (25) expr -> ID LPAREN arg_list . RPAREN
+    (24) term -> ID LPAREN arg_list . RPAREN
 
-    ID              shift and go to state 82
+    RPAREN          shift and go to state 71
 
 
 state 58
 
-    (8) stmt -> FROM ID IMPORT . ID
+    (27) term -> ID DOT ID .
 
-    ID              shift and go to state 83
+    NEWLINE         reduce using rule 27 (term -> ID DOT ID .)
+    PLUS            reduce using rule 27 (term -> ID DOT ID .)
+    MINUS           reduce using rule 27 (term -> ID DOT ID .)
+    MUL             reduce using rule 27 (term -> ID DOT ID .)
+    DIV             reduce using rule 27 (term -> ID DOT ID .)
+    COMMA           reduce using rule 27 (term -> ID DOT ID .)
+    RPAREN          reduce using rule 27 (term -> ID DOT ID .)
 
 
 state 59
 
-    (23) expr -> expr PLUS term .
+    (31) term -> LPAREN expr RPAREN .
 
-    PLUS            reduce using rule 23 (expr -> expr PLUS term .)
-    MINUS           reduce using rule 23 (expr -> expr PLUS term .)
-    TIMES           reduce using rule 23 (expr -> expr PLUS term .)
-    DIVIDE          reduce using rule 23 (expr -> expr PLUS term .)
-    EQ              reduce using rule 23 (expr -> expr PLUS term .)
-    NE              reduce using rule 23 (expr -> expr PLUS term .)
-    LT              reduce using rule 23 (expr -> expr PLUS term .)
-    GT              reduce using rule 23 (expr -> expr PLUS term .)
-    AND             reduce using rule 23 (expr -> expr PLUS term .)
-    OR              reduce using rule 23 (expr -> expr PLUS term .)
-    CLASS           reduce using rule 23 (expr -> expr PLUS term .)
-    DEF             reduce using rule 23 (expr -> expr PLUS term .)
-    IMPORT          reduce using rule 23 (expr -> expr PLUS term .)
-    FROM            reduce using rule 23 (expr -> expr PLUS term .)
-    RETURN          reduce using rule 23 (expr -> expr PLUS term .)
-    PASS            reduce using rule 23 (expr -> expr PLUS term .)
-    IF              reduce using rule 23 (expr -> expr PLUS term .)
-    WHILE           reduce using rule 23 (expr -> expr PLUS term .)
-    ID              reduce using rule 23 (expr -> expr PLUS term .)
-    NUM             reduce using rule 23 (expr -> expr PLUS term .)
-    STR             reduce using rule 23 (expr -> expr PLUS term .)
-    LPAREN          reduce using rule 23 (expr -> expr PLUS term .)
-    NOT             reduce using rule 23 (expr -> expr PLUS term .)
-    $end            reduce using rule 23 (expr -> expr PLUS term .)
-    RPAREN          reduce using rule 23 (expr -> expr PLUS term .)
-    ELSE            reduce using rule 23 (expr -> expr PLUS term .)
-    COLON           reduce using rule 23 (expr -> expr PLUS term .)
-    COMMA           reduce using rule 23 (expr -> expr PLUS term .)
+    NEWLINE         reduce using rule 31 (term -> LPAREN expr RPAREN .)
+    PLUS            reduce using rule 31 (term -> LPAREN expr RPAREN .)
+    MINUS           reduce using rule 31 (term -> LPAREN expr RPAREN .)
+    MUL             reduce using rule 31 (term -> LPAREN expr RPAREN .)
+    DIV             reduce using rule 31 (term -> LPAREN expr RPAREN .)
+    COMMA           reduce using rule 31 (term -> LPAREN expr RPAREN .)
+    RPAREN          reduce using rule 31 (term -> LPAREN expr RPAREN .)
 
 
 state 60
 
-    (24) expr -> expr MINUS term .
+    (26) term -> SELF DOT ID .
 
-    PLUS            reduce using rule 24 (expr -> expr MINUS term .)
-    MINUS           reduce using rule 24 (expr -> expr MINUS term .)
-    TIMES           reduce using rule 24 (expr -> expr MINUS term .)
-    DIVIDE          reduce using rule 24 (expr -> expr MINUS term .)
-    EQ              reduce using rule 24 (expr -> expr MINUS term .)
-    NE              reduce using rule 24 (expr -> expr MINUS term .)
-    LT              reduce using rule 24 (expr -> expr MINUS term .)
-    GT              reduce using rule 24 (expr -> expr MINUS term .)
-    AND             reduce using rule 24 (expr -> expr MINUS term .)
-    OR              reduce using rule 24 (expr -> expr MINUS term .)
-    CLASS           reduce using rule 24 (expr -> expr MINUS term .)
-    DEF             reduce using rule 24 (expr -> expr MINUS term .)
-    IMPORT          reduce using rule 24 (expr -> expr MINUS term .)
-    FROM            reduce using rule 24 (expr -> expr MINUS term .)
-    RETURN          reduce using rule 24 (expr -> expr MINUS term .)
-    PASS            reduce using rule 24 (expr -> expr MINUS term .)
-    IF              reduce using rule 24 (expr -> expr MINUS term .)
-    WHILE           reduce using rule 24 (expr -> expr MINUS term .)
-    ID              reduce using rule 24 (expr -> expr MINUS term .)
-    NUM             reduce using rule 24 (expr -> expr MINUS term .)
-    STR             reduce using rule 24 (expr -> expr MINUS term .)
-    LPAREN          reduce using rule 24 (expr -> expr MINUS term .)
-    NOT             reduce using rule 24 (expr -> expr MINUS term .)
-    $end            reduce using rule 24 (expr -> expr MINUS term .)
-    RPAREN          reduce using rule 24 (expr -> expr MINUS term .)
-    ELSE            reduce using rule 24 (expr -> expr MINUS term .)
-    COLON           reduce using rule 24 (expr -> expr MINUS term .)
-    COMMA           reduce using rule 24 (expr -> expr MINUS term .)
+    NEWLINE         reduce using rule 26 (term -> SELF DOT ID .)
+    PLUS            reduce using rule 26 (term -> SELF DOT ID .)
+    MINUS           reduce using rule 26 (term -> SELF DOT ID .)
+    MUL             reduce using rule 26 (term -> SELF DOT ID .)
+    DIV             reduce using rule 26 (term -> SELF DOT ID .)
+    COMMA           reduce using rule 26 (term -> SELF DOT ID .)
+    RPAREN          reduce using rule 26 (term -> SELF DOT ID .)
 
 
 state 61
 
-    (25) expr -> expr TIMES term .
+    (4) stmt -> CLASS ID COLON NEWLINE block .
 
-    PLUS            reduce using rule 25 (expr -> expr TIMES term .)
-    MINUS           reduce using rule 25 (expr -> expr TIMES term .)
-    TIMES           reduce using rule 25 (expr -> expr TIMES term .)
-    DIVIDE          reduce using rule 25 (expr -> expr TIMES term .)
-    EQ              reduce using rule 25 (expr -> expr TIMES term .)
-    NE              reduce using rule 25 (expr -> expr TIMES term .)
-    LT              reduce using rule 25 (expr -> expr TIMES term .)
-    GT              reduce using rule 25 (expr -> expr TIMES term .)
-    AND             reduce using rule 25 (expr -> expr TIMES term .)
-    OR              reduce using rule 25 (expr -> expr TIMES term .)
-    CLASS           reduce using rule 25 (expr -> expr TIMES term .)
-    DEF             reduce using rule 25 (expr -> expr TIMES term .)
-    IMPORT          reduce using rule 25 (expr -> expr TIMES term .)
-    FROM            reduce using rule 25 (expr -> expr TIMES term .)
-    RETURN          reduce using rule 25 (expr -> expr TIMES term .)
-    PASS            reduce using rule 25 (expr -> expr TIMES term .)
-    IF              reduce using rule 25 (expr -> expr TIMES term .)
-    WHILE           reduce using rule 25 (expr -> expr TIMES term .)
-    ID              reduce using rule 25 (expr -> expr TIMES term .)
-    NUM             reduce using rule 25 (expr -> expr TIMES term .)
-    STR             reduce using rule 25 (expr -> expr TIMES term .)
-    LPAREN          reduce using rule 25 (expr -> expr TIMES term .)
-    NOT             reduce using rule 25 (expr -> expr TIMES term .)
-    $end            reduce using rule 25 (expr -> expr TIMES term .)
-    RPAREN          reduce using rule 25 (expr -> expr TIMES term .)
-    ELSE            reduce using rule 25 (expr -> expr TIMES term .)
-    COLON           reduce using rule 25 (expr -> expr TIMES term .)
-    COMMA           reduce using rule 25 (expr -> expr TIMES term .)
+    CLASS           reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    DEF             reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    ID              reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    SELF            reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    RETURN          reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    PASS            reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    $end            reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
+    DEDENT          reduce using rule 4 (stmt -> CLASS ID COLON NEWLINE block .)
 
 
 state 62
 
-    (26) expr -> expr DIVIDE term .
+    (39) block -> INDENT . stmt_list DEDENT
+    (2) stmt_list -> . stmt stmt_list
+    (3) stmt_list -> . stmt
+    (4) stmt -> . CLASS ID COLON NEWLINE block
+    (5) stmt -> . DEF method_name LPAREN param_list RPAREN COLON NEWLINE block
+    (6) stmt -> . ID EQUALS expr NEWLINE
+    (7) stmt -> . ID DOT ID EQUALS expr NEWLINE
+    (8) stmt -> . SELF DOT ID EQUALS expr NEWLINE
+    (9) stmt -> . ID DOT ID LPAREN arg_list RPAREN NEWLINE
+    (10) stmt -> . ID LPAREN arg_list RPAREN NEWLINE
+    (11) stmt -> . RETURN expr NEWLINE
+    (12) stmt -> . RETURN NEWLINE
+    (13) stmt -> . PASS NEWLINE
 
-    PLUS            reduce using rule 26 (expr -> expr DIVIDE term .)
-    MINUS           reduce using rule 26 (expr -> expr DIVIDE term .)
-    TIMES           reduce using rule 26 (expr -> expr DIVIDE term .)
-    DIVIDE          reduce using rule 26 (expr -> expr DIVIDE term .)
-    EQ              reduce using rule 26 (expr -> expr DIVIDE term .)
-    NE              reduce using rule 26 (expr -> expr DIVIDE term .)
-    LT              reduce using rule 26 (expr -> expr DIVIDE term .)
-    GT              reduce using rule 26 (expr -> expr DIVIDE term .)
-    AND             reduce using rule 26 (expr -> expr DIVIDE term .)
-    OR              reduce using rule 26 (expr -> expr DIVIDE term .)
-    CLASS           reduce using rule 26 (expr -> expr DIVIDE term .)
-    DEF             reduce using rule 26 (expr -> expr DIVIDE term .)
-    IMPORT          reduce using rule 26 (expr -> expr DIVIDE term .)
-    FROM            reduce using rule 26 (expr -> expr DIVIDE term .)
-    RETURN          reduce using rule 26 (expr -> expr DIVIDE term .)
-    PASS            reduce using rule 26 (expr -> expr DIVIDE term .)
-    IF              reduce using rule 26 (expr -> expr DIVIDE term .)
-    WHILE           reduce using rule 26 (expr -> expr DIVIDE term .)
-    ID              reduce using rule 26 (expr -> expr DIVIDE term .)
-    NUM             reduce using rule 26 (expr -> expr DIVIDE term .)
-    STR             reduce using rule 26 (expr -> expr DIVIDE term .)
-    LPAREN          reduce using rule 26 (expr -> expr DIVIDE term .)
-    NOT             reduce using rule 26 (expr -> expr DIVIDE term .)
-    $end            reduce using rule 26 (expr -> expr DIVIDE term .)
-    RPAREN          reduce using rule 26 (expr -> expr DIVIDE term .)
-    ELSE            reduce using rule 26 (expr -> expr DIVIDE term .)
-    COLON           reduce using rule 26 (expr -> expr DIVIDE term .)
-    COMMA           reduce using rule 26 (expr -> expr DIVIDE term .)
+    CLASS           shift and go to state 4
+    DEF             shift and go to state 6
+    ID              shift and go to state 5
+    SELF            shift and go to state 7
+    RETURN          shift and go to state 8
+    PASS            shift and go to state 9
 
+    stmt_list                      shift and go to state 72
+    stmt                           shift and go to state 3
 
 state 63
 
-    (27) expr -> expr EQ term .
+    (7) stmt -> ID DOT ID EQUALS expr . NEWLINE
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    PLUS            reduce using rule 27 (expr -> expr EQ term .)
-    MINUS           reduce using rule 27 (expr -> expr EQ term .)
-    TIMES           reduce using rule 27 (expr -> expr EQ term .)
-    DIVIDE          reduce using rule 27 (expr -> expr EQ term .)
-    EQ              reduce using rule 27 (expr -> expr EQ term .)
-    NE              reduce using rule 27 (expr -> expr EQ term .)
-    LT              reduce using rule 27 (expr -> expr EQ term .)
-    GT              reduce using rule 27 (expr -> expr EQ term .)
-    AND             reduce using rule 27 (expr -> expr EQ term .)
-    OR              reduce using rule 27 (expr -> expr EQ term .)
-    CLASS           reduce using rule 27 (expr -> expr EQ term .)
-    DEF             reduce using rule 27 (expr -> expr EQ term .)
-    IMPORT          reduce using rule 27 (expr -> expr EQ term .)
-    FROM            reduce using rule 27 (expr -> expr EQ term .)
-    RETURN          reduce using rule 27 (expr -> expr EQ term .)
-    PASS            reduce using rule 27 (expr -> expr EQ term .)
-    IF              reduce using rule 27 (expr -> expr EQ term .)
-    WHILE           reduce using rule 27 (expr -> expr EQ term .)
-    ID              reduce using rule 27 (expr -> expr EQ term .)
-    NUM             reduce using rule 27 (expr -> expr EQ term .)
-    STR             reduce using rule 27 (expr -> expr EQ term .)
-    LPAREN          reduce using rule 27 (expr -> expr EQ term .)
-    NOT             reduce using rule 27 (expr -> expr EQ term .)
-    $end            reduce using rule 27 (expr -> expr EQ term .)
-    RPAREN          reduce using rule 27 (expr -> expr EQ term .)
-    ELSE            reduce using rule 27 (expr -> expr EQ term .)
-    COLON           reduce using rule 27 (expr -> expr EQ term .)
-    COMMA           reduce using rule 27 (expr -> expr EQ term .)
+    NEWLINE         shift and go to state 73
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
+    binary_op                      shift and go to state 36
 
 state 64
 
-    (28) expr -> expr NE term .
+    (9) stmt -> ID DOT ID LPAREN arg_list . RPAREN NEWLINE
 
-    PLUS            reduce using rule 28 (expr -> expr NE term .)
-    MINUS           reduce using rule 28 (expr -> expr NE term .)
-    TIMES           reduce using rule 28 (expr -> expr NE term .)
-    DIVIDE          reduce using rule 28 (expr -> expr NE term .)
-    EQ              reduce using rule 28 (expr -> expr NE term .)
-    NE              reduce using rule 28 (expr -> expr NE term .)
-    LT              reduce using rule 28 (expr -> expr NE term .)
-    GT              reduce using rule 28 (expr -> expr NE term .)
-    AND             reduce using rule 28 (expr -> expr NE term .)
-    OR              reduce using rule 28 (expr -> expr NE term .)
-    CLASS           reduce using rule 28 (expr -> expr NE term .)
-    DEF             reduce using rule 28 (expr -> expr NE term .)
-    IMPORT          reduce using rule 28 (expr -> expr NE term .)
-    FROM            reduce using rule 28 (expr -> expr NE term .)
-    RETURN          reduce using rule 28 (expr -> expr NE term .)
-    PASS            reduce using rule 28 (expr -> expr NE term .)
-    IF              reduce using rule 28 (expr -> expr NE term .)
-    WHILE           reduce using rule 28 (expr -> expr NE term .)
-    ID              reduce using rule 28 (expr -> expr NE term .)
-    NUM             reduce using rule 28 (expr -> expr NE term .)
-    STR             reduce using rule 28 (expr -> expr NE term .)
-    LPAREN          reduce using rule 28 (expr -> expr NE term .)
-    NOT             reduce using rule 28 (expr -> expr NE term .)
-    $end            reduce using rule 28 (expr -> expr NE term .)
-    RPAREN          reduce using rule 28 (expr -> expr NE term .)
-    ELSE            reduce using rule 28 (expr -> expr NE term .)
-    COLON           reduce using rule 28 (expr -> expr NE term .)
-    COMMA           reduce using rule 28 (expr -> expr NE term .)
+    RPAREN          shift and go to state 74
 
 
 state 65
 
-    (29) expr -> expr LT term .
+    (10) stmt -> ID LPAREN arg_list RPAREN NEWLINE .
 
-    PLUS            reduce using rule 29 (expr -> expr LT term .)
-    MINUS           reduce using rule 29 (expr -> expr LT term .)
-    TIMES           reduce using rule 29 (expr -> expr LT term .)
-    DIVIDE          reduce using rule 29 (expr -> expr LT term .)
-    EQ              reduce using rule 29 (expr -> expr LT term .)
-    NE              reduce using rule 29 (expr -> expr LT term .)
-    LT              reduce using rule 29 (expr -> expr LT term .)
-    GT              reduce using rule 29 (expr -> expr LT term .)
-    AND             reduce using rule 29 (expr -> expr LT term .)
-    OR              reduce using rule 29 (expr -> expr LT term .)
-    CLASS           reduce using rule 29 (expr -> expr LT term .)
-    DEF             reduce using rule 29 (expr -> expr LT term .)
-    IMPORT          reduce using rule 29 (expr -> expr LT term .)
-    FROM            reduce using rule 29 (expr -> expr LT term .)
-    RETURN          reduce using rule 29 (expr -> expr LT term .)
-    PASS            reduce using rule 29 (expr -> expr LT term .)
-    IF              reduce using rule 29 (expr -> expr LT term .)
-    WHILE           reduce using rule 29 (expr -> expr LT term .)
-    ID              reduce using rule 29 (expr -> expr LT term .)
-    NUM             reduce using rule 29 (expr -> expr LT term .)
-    STR             reduce using rule 29 (expr -> expr LT term .)
-    LPAREN          reduce using rule 29 (expr -> expr LT term .)
-    NOT             reduce using rule 29 (expr -> expr LT term .)
-    $end            reduce using rule 29 (expr -> expr LT term .)
-    RPAREN          reduce using rule 29 (expr -> expr LT term .)
-    ELSE            reduce using rule 29 (expr -> expr LT term .)
-    COLON           reduce using rule 29 (expr -> expr LT term .)
-    COMMA           reduce using rule 29 (expr -> expr LT term .)
+    CLASS           reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    DEF             reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    ID              reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    SELF            reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    RETURN          reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    PASS            reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    $end            reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
+    DEDENT          reduce using rule 10 (stmt -> ID LPAREN arg_list RPAREN NEWLINE .)
 
 
 state 66
 
-    (30) expr -> expr GT term .
+    (37) arg_list -> expr COMMA arg_list .
 
-    PLUS            reduce using rule 30 (expr -> expr GT term .)
-    MINUS           reduce using rule 30 (expr -> expr GT term .)
-    TIMES           reduce using rule 30 (expr -> expr GT term .)
-    DIVIDE          reduce using rule 30 (expr -> expr GT term .)
-    EQ              reduce using rule 30 (expr -> expr GT term .)
-    NE              reduce using rule 30 (expr -> expr GT term .)
-    LT              reduce using rule 30 (expr -> expr GT term .)
-    GT              reduce using rule 30 (expr -> expr GT term .)
-    AND             reduce using rule 30 (expr -> expr GT term .)
-    OR              reduce using rule 30 (expr -> expr GT term .)
-    CLASS           reduce using rule 30 (expr -> expr GT term .)
-    DEF             reduce using rule 30 (expr -> expr GT term .)
-    IMPORT          reduce using rule 30 (expr -> expr GT term .)
-    FROM            reduce using rule 30 (expr -> expr GT term .)
-    RETURN          reduce using rule 30 (expr -> expr GT term .)
-    PASS            reduce using rule 30 (expr -> expr GT term .)
-    IF              reduce using rule 30 (expr -> expr GT term .)
-    WHILE           reduce using rule 30 (expr -> expr GT term .)
-    ID              reduce using rule 30 (expr -> expr GT term .)
-    NUM             reduce using rule 30 (expr -> expr GT term .)
-    STR             reduce using rule 30 (expr -> expr GT term .)
-    LPAREN          reduce using rule 30 (expr -> expr GT term .)
-    NOT             reduce using rule 30 (expr -> expr GT term .)
-    $end            reduce using rule 30 (expr -> expr GT term .)
-    RPAREN          reduce using rule 30 (expr -> expr GT term .)
-    ELSE            reduce using rule 30 (expr -> expr GT term .)
-    COLON           reduce using rule 30 (expr -> expr GT term .)
-    COMMA           reduce using rule 30 (expr -> expr GT term .)
+    RPAREN          reduce using rule 37 (arg_list -> expr COMMA arg_list .)
 
 
 state 67
 
-    (31) expr -> expr AND term .
+    (5) stmt -> DEF method_name LPAREN param_list RPAREN . COLON NEWLINE block
 
-    PLUS            reduce using rule 31 (expr -> expr AND term .)
-    MINUS           reduce using rule 31 (expr -> expr AND term .)
-    TIMES           reduce using rule 31 (expr -> expr AND term .)
-    DIVIDE          reduce using rule 31 (expr -> expr AND term .)
-    EQ              reduce using rule 31 (expr -> expr AND term .)
-    NE              reduce using rule 31 (expr -> expr AND term .)
-    LT              reduce using rule 31 (expr -> expr AND term .)
-    GT              reduce using rule 31 (expr -> expr AND term .)
-    AND             reduce using rule 31 (expr -> expr AND term .)
-    OR              reduce using rule 31 (expr -> expr AND term .)
-    CLASS           reduce using rule 31 (expr -> expr AND term .)
-    DEF             reduce using rule 31 (expr -> expr AND term .)
-    IMPORT          reduce using rule 31 (expr -> expr AND term .)
-    FROM            reduce using rule 31 (expr -> expr AND term .)
-    RETURN          reduce using rule 31 (expr -> expr AND term .)
-    PASS            reduce using rule 31 (expr -> expr AND term .)
-    IF              reduce using rule 31 (expr -> expr AND term .)
-    WHILE           reduce using rule 31 (expr -> expr AND term .)
-    ID              reduce using rule 31 (expr -> expr AND term .)
-    NUM             reduce using rule 31 (expr -> expr AND term .)
-    STR             reduce using rule 31 (expr -> expr AND term .)
-    LPAREN          reduce using rule 31 (expr -> expr AND term .)
-    NOT             reduce using rule 31 (expr -> expr AND term .)
-    $end            reduce using rule 31 (expr -> expr AND term .)
-    RPAREN          reduce using rule 31 (expr -> expr AND term .)
-    ELSE            reduce using rule 31 (expr -> expr AND term .)
-    COLON           reduce using rule 31 (expr -> expr AND term .)
-    COMMA           reduce using rule 31 (expr -> expr AND term .)
+    COLON           shift and go to state 75
 
 
 state 68
 
-    (32) expr -> expr OR term .
+    (18) param_list -> SELF COMMA . params
+    (20) params -> . ID COMMA params
+    (21) params -> . ID
 
-    PLUS            reduce using rule 32 (expr -> expr OR term .)
-    MINUS           reduce using rule 32 (expr -> expr OR term .)
-    TIMES           reduce using rule 32 (expr -> expr OR term .)
-    DIVIDE          reduce using rule 32 (expr -> expr OR term .)
-    EQ              reduce using rule 32 (expr -> expr OR term .)
-    NE              reduce using rule 32 (expr -> expr OR term .)
-    LT              reduce using rule 32 (expr -> expr OR term .)
-    GT              reduce using rule 32 (expr -> expr OR term .)
-    AND             reduce using rule 32 (expr -> expr OR term .)
-    OR              reduce using rule 32 (expr -> expr OR term .)
-    CLASS           reduce using rule 32 (expr -> expr OR term .)
-    DEF             reduce using rule 32 (expr -> expr OR term .)
-    IMPORT          reduce using rule 32 (expr -> expr OR term .)
-    FROM            reduce using rule 32 (expr -> expr OR term .)
-    RETURN          reduce using rule 32 (expr -> expr OR term .)
-    PASS            reduce using rule 32 (expr -> expr OR term .)
-    IF              reduce using rule 32 (expr -> expr OR term .)
-    WHILE           reduce using rule 32 (expr -> expr OR term .)
-    ID              reduce using rule 32 (expr -> expr OR term .)
-    NUM             reduce using rule 32 (expr -> expr OR term .)
-    STR             reduce using rule 32 (expr -> expr OR term .)
-    LPAREN          reduce using rule 32 (expr -> expr OR term .)
-    NOT             reduce using rule 32 (expr -> expr OR term .)
-    $end            reduce using rule 32 (expr -> expr OR term .)
-    RPAREN          reduce using rule 32 (expr -> expr OR term .)
-    ELSE            reduce using rule 32 (expr -> expr OR term .)
-    COLON           reduce using rule 32 (expr -> expr OR term .)
-    COMMA           reduce using rule 32 (expr -> expr OR term .)
+    ID              shift and go to state 54
 
+    params                         shift and go to state 76
 
 state 69
 
-    (12) stmt -> IF expr COLON . block ELSE COLON block
-    (13) stmt -> IF expr COLON . block
-    (17) block -> . NEWLINE program
+    (20) params -> ID COMMA . params
+    (20) params -> . ID COMMA params
+    (21) params -> . ID
 
-    NEWLINE         shift and go to state 74
+    ID              shift and go to state 54
 
-    block                          shift and go to state 84
+    params                         shift and go to state 77
 
 state 70
 
-    (14) stmt -> WHILE expr COLON . block
-    (17) block -> . NEWLINE program
+    (8) stmt -> SELF DOT ID EQUALS expr . NEWLINE
+    (22) expr -> expr . binary_op expr
+    (32) binary_op -> . PLUS
+    (33) binary_op -> . MINUS
+    (34) binary_op -> . MUL
+    (35) binary_op -> . DIV
 
-    NEWLINE         shift and go to state 74
+    NEWLINE         shift and go to state 78
+    PLUS            shift and go to state 37
+    MINUS           shift and go to state 38
+    MUL             shift and go to state 39
+    DIV             shift and go to state 40
 
-    block                          shift and go to state 85
+    binary_op                      shift and go to state 36
 
 state 71
 
-    (15) stmt -> target EQ_OP expr .
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
+    (25) expr -> ID LPAREN arg_list RPAREN .
+    (24) term -> ID LPAREN arg_list RPAREN .
 
-  ! shift/reduce conflict for MINUS resolved as shift
-    CLASS           reduce using rule 15 (stmt -> target EQ_OP expr .)
-    DEF             reduce using rule 15 (stmt -> target EQ_OP expr .)
-    IMPORT          reduce using rule 15 (stmt -> target EQ_OP expr .)
-    FROM            reduce using rule 15 (stmt -> target EQ_OP expr .)
-    RETURN          reduce using rule 15 (stmt -> target EQ_OP expr .)
-    PASS            reduce using rule 15 (stmt -> target EQ_OP expr .)
-    IF              reduce using rule 15 (stmt -> target EQ_OP expr .)
-    WHILE           reduce using rule 15 (stmt -> target EQ_OP expr .)
-    ID              reduce using rule 15 (stmt -> target EQ_OP expr .)
-    NUM             reduce using rule 15 (stmt -> target EQ_OP expr .)
-    STR             reduce using rule 15 (stmt -> target EQ_OP expr .)
-    LPAREN          reduce using rule 15 (stmt -> target EQ_OP expr .)
-    NOT             reduce using rule 15 (stmt -> target EQ_OP expr .)
-    $end            reduce using rule 15 (stmt -> target EQ_OP expr .)
-    ELSE            reduce using rule 15 (stmt -> target EQ_OP expr .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
+  ! reduce/reduce conflict for NEWLINE resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+  ! reduce/reduce conflict for PLUS resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+  ! reduce/reduce conflict for MINUS resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+  ! reduce/reduce conflict for MUL resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+  ! reduce/reduce conflict for DIV resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+  ! reduce/reduce conflict for COMMA resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+  ! reduce/reduce conflict for RPAREN resolved using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    NEWLINE         reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    PLUS            reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    MINUS           reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    MUL             reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    DIV             reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    COMMA           reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
+    RPAREN          reduce using rule 24 (term -> ID LPAREN arg_list RPAREN .)
 
-  ! MINUS           [ reduce using rule 15 (stmt -> target EQ_OP expr .) ]
+  ! NEWLINE         [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
+  ! PLUS            [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
+  ! MINUS           [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
+  ! MUL             [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
+  ! DIV             [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
+  ! COMMA           [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
+  ! RPAREN          [ reduce using rule 25 (expr -> ID LPAREN arg_list RPAREN .) ]
 
 
 state 72
 
-    (3) stmt -> CLASS ID LPAREN ID . RPAREN COLON block
+    (39) block -> INDENT stmt_list . DEDENT
 
-    RPAREN          shift and go to state 86
+    DEDENT          shift and go to state 79
 
 
 state 73
 
-    (4) stmt -> CLASS ID COLON block .
+    (7) stmt -> ID DOT ID EQUALS expr NEWLINE .
 
-    CLASS           reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    DEF             reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    IMPORT          reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    FROM            reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    RETURN          reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    PASS            reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    IF              reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    WHILE           reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    ID              reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    NUM             reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    STR             reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    LPAREN          reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    NOT             reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    MINUS           reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    $end            reduce using rule 4 (stmt -> CLASS ID COLON block .)
-    ELSE            reduce using rule 4 (stmt -> CLASS ID COLON block .)
+    CLASS           reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    DEF             reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    ID              reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    SELF            reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    RETURN          reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    PASS            reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    $end            reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
+    DEDENT          reduce using rule 7 (stmt -> ID DOT ID EQUALS expr NEWLINE .)
 
 
 state 74
 
-    (17) block -> NEWLINE . program
-    (1) program -> . stmt
-    (2) program -> . program stmt
-    (3) stmt -> . CLASS ID LPAREN ID RPAREN COLON block
-    (4) stmt -> . CLASS ID COLON block
-    (5) stmt -> . DEF ID LPAREN params RPAREN COLON block
-    (6) stmt -> . DEF ID LPAREN RPAREN COLON block
-    (7) stmt -> . IMPORT import_path
-    (8) stmt -> . FROM ID IMPORT ID
-    (9) stmt -> . RETURN expr
-    (10) stmt -> . RETURN
-    (11) stmt -> . PASS
-    (12) stmt -> . IF expr COLON block ELSE COLON block
-    (13) stmt -> . IF expr COLON block
-    (14) stmt -> . WHILE expr COLON block
-    (15) stmt -> . target EQ_OP expr
-    (16) stmt -> . expr
-    (46) target -> . ID
-    (47) target -> . ID call_chain
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (9) stmt -> ID DOT ID LPAREN arg_list RPAREN . NEWLINE
 
-    CLASS           shift and go to state 3
-    DEF             shift and go to state 6
-    IMPORT          shift and go to state 7
-    FROM            shift and go to state 8
-    RETURN          shift and go to state 9
-    PASS            shift and go to state 11
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    ID              shift and go to state 4
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    NEWLINE         shift and go to state 80
 
-    program                        shift and go to state 87
-    stmt                           shift and go to state 2
-    expr                           shift and go to state 10
-    target                         shift and go to state 14
-    term                           shift and go to state 15
 
 state 75
 
-    (42) call_chain -> call_chain DOT ID .
+    (5) stmt -> DEF method_name LPAREN param_list RPAREN COLON . NEWLINE block
 
-    DOT             reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    LPAREN          reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    EQ_OP           reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    PLUS            reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    MINUS           reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    TIMES           reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    DIVIDE          reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    EQ              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    NE              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    LT              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    GT              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    AND             reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    OR              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    CLASS           reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    DEF             reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    IMPORT          reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    FROM            reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    RETURN          reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    PASS            reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    IF              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    WHILE           reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    ID              reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    NUM             reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    STR             reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    NOT             reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    $end            reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    ELSE            reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    RPAREN          reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    COLON           reduce using rule 42 (call_chain -> call_chain DOT ID .)
-    COMMA           reduce using rule 42 (call_chain -> call_chain DOT ID .)
+    NEWLINE         shift and go to state 81
 
 
 state 76
 
-    (43) call_chain -> call_chain LPAREN args . RPAREN
-    (45) args -> args . COMMA expr
+    (18) param_list -> SELF COMMA params .
 
-    RPAREN          shift and go to state 88
-    COMMA           shift and go to state 78
+    RPAREN          reduce using rule 18 (param_list -> SELF COMMA params .)
 
 
 state 77
 
-    (41) call_chain -> LPAREN args RPAREN .
+    (20) params -> ID COMMA params .
 
-    DOT             reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    LPAREN          reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    EQ_OP           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    PLUS            reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    MINUS           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    TIMES           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    DIVIDE          reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    EQ              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    NE              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    LT              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    GT              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    AND             reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    OR              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    CLASS           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    DEF             reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    IMPORT          reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    FROM            reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    RETURN          reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    PASS            reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    IF              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    WHILE           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    ID              reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    NUM             reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    STR             reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    NOT             reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    $end            reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    ELSE            reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    RPAREN          reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    COLON           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
-    COMMA           reduce using rule 41 (call_chain -> LPAREN args RPAREN .)
+    RPAREN          reduce using rule 20 (params -> ID COMMA params .)
 
 
 state 78
 
-    (45) args -> args COMMA . expr
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
+    (8) stmt -> SELF DOT ID EQUALS expr NEWLINE .
 
-    ID              shift and go to state 26
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
+    CLASS           reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    DEF             reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    ID              reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    SELF            reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    RETURN          reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    PASS            reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    $end            reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
+    DEDENT          reduce using rule 8 (stmt -> SELF DOT ID EQUALS expr NEWLINE .)
 
-    expr                           shift and go to state 89
-    term                           shift and go to state 15
 
 state 79
 
-    (18) params -> ID .
+    (39) block -> INDENT stmt_list DEDENT .
 
-    RPAREN          reduce using rule 18 (params -> ID .)
-    COMMA           reduce using rule 18 (params -> ID .)
+    CLASS           reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    DEF             reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    ID              reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    SELF            reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    RETURN          reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    PASS            reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    $end            reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
+    DEDENT          reduce using rule 39 (block -> INDENT stmt_list DEDENT .)
 
 
 state 80
 
-    (5) stmt -> DEF ID LPAREN params . RPAREN COLON block
-    (19) params -> params . COMMA ID
+    (9) stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .
 
-    RPAREN          shift and go to state 90
-    COMMA           shift and go to state 91
+    CLASS           reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    DEF             reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    ID              reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    SELF            reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    RETURN          reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    PASS            reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    $end            reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
+    DEDENT          reduce using rule 9 (stmt -> ID DOT ID LPAREN arg_list RPAREN NEWLINE .)
 
 
 state 81
 
-    (6) stmt -> DEF ID LPAREN RPAREN . COLON block
+    (5) stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE . block
+    (39) block -> . INDENT stmt_list DEDENT
 
-    COLON           shift and go to state 92
+    INDENT          shift and go to state 62
 
+    block                          shift and go to state 82
 
 state 82
 
-    (21) import_path -> import_path DOT ID .
-
-    DOT             reduce using rule 21 (import_path -> import_path DOT ID .)
-    CLASS           reduce using rule 21 (import_path -> import_path DOT ID .)
-    DEF             reduce using rule 21 (import_path -> import_path DOT ID .)
-    IMPORT          reduce using rule 21 (import_path -> import_path DOT ID .)
-    FROM            reduce using rule 21 (import_path -> import_path DOT ID .)
-    RETURN          reduce using rule 21 (import_path -> import_path DOT ID .)
-    PASS            reduce using rule 21 (import_path -> import_path DOT ID .)
-    IF              reduce using rule 21 (import_path -> import_path DOT ID .)
-    WHILE           reduce using rule 21 (import_path -> import_path DOT ID .)
-    ID              reduce using rule 21 (import_path -> import_path DOT ID .)
-    NUM             reduce using rule 21 (import_path -> import_path DOT ID .)
-    STR             reduce using rule 21 (import_path -> import_path DOT ID .)
-    LPAREN          reduce using rule 21 (import_path -> import_path DOT ID .)
-    NOT             reduce using rule 21 (import_path -> import_path DOT ID .)
-    MINUS           reduce using rule 21 (import_path -> import_path DOT ID .)
-    $end            reduce using rule 21 (import_path -> import_path DOT ID .)
-    ELSE            reduce using rule 21 (import_path -> import_path DOT ID .)
-
-
-state 83
-
-    (8) stmt -> FROM ID IMPORT ID .
-
-    CLASS           reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    DEF             reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    IMPORT          reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    FROM            reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    RETURN          reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    PASS            reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    IF              reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    WHILE           reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    ID              reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    NUM             reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    STR             reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    LPAREN          reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    NOT             reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    MINUS           reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    $end            reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-    ELSE            reduce using rule 8 (stmt -> FROM ID IMPORT ID .)
-
-
-state 84
-
-    (12) stmt -> IF expr COLON block . ELSE COLON block
-    (13) stmt -> IF expr COLON block .
-
-  ! shift/reduce conflict for ELSE resolved as shift
-    ELSE            shift and go to state 93
-    CLASS           reduce using rule 13 (stmt -> IF expr COLON block .)
-    DEF             reduce using rule 13 (stmt -> IF expr COLON block .)
-    IMPORT          reduce using rule 13 (stmt -> IF expr COLON block .)
-    FROM            reduce using rule 13 (stmt -> IF expr COLON block .)
-    RETURN          reduce using rule 13 (stmt -> IF expr COLON block .)
-    PASS            reduce using rule 13 (stmt -> IF expr COLON block .)
-    IF              reduce using rule 13 (stmt -> IF expr COLON block .)
-    WHILE           reduce using rule 13 (stmt -> IF expr COLON block .)
-    ID              reduce using rule 13 (stmt -> IF expr COLON block .)
-    NUM             reduce using rule 13 (stmt -> IF expr COLON block .)
-    STR             reduce using rule 13 (stmt -> IF expr COLON block .)
-    LPAREN          reduce using rule 13 (stmt -> IF expr COLON block .)
-    NOT             reduce using rule 13 (stmt -> IF expr COLON block .)
-    MINUS           reduce using rule 13 (stmt -> IF expr COLON block .)
-    $end            reduce using rule 13 (stmt -> IF expr COLON block .)
-
-  ! ELSE            [ reduce using rule 13 (stmt -> IF expr COLON block .) ]
-
-
-state 85
-
-    (14) stmt -> WHILE expr COLON block .
-
-    CLASS           reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    DEF             reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    IMPORT          reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    FROM            reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    RETURN          reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    PASS            reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    IF              reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    WHILE           reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    ID              reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    NUM             reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    STR             reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    LPAREN          reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    NOT             reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    MINUS           reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    $end            reduce using rule 14 (stmt -> WHILE expr COLON block .)
-    ELSE            reduce using rule 14 (stmt -> WHILE expr COLON block .)
-
-
-state 86
-
-    (3) stmt -> CLASS ID LPAREN ID RPAREN . COLON block
-
-    COLON           shift and go to state 94
-
-
-state 87
-
-    (17) block -> NEWLINE program .
-    (2) program -> program . stmt
-    (3) stmt -> . CLASS ID LPAREN ID RPAREN COLON block
-    (4) stmt -> . CLASS ID COLON block
-    (5) stmt -> . DEF ID LPAREN params RPAREN COLON block
-    (6) stmt -> . DEF ID LPAREN RPAREN COLON block
-    (7) stmt -> . IMPORT import_path
-    (8) stmt -> . FROM ID IMPORT ID
-    (9) stmt -> . RETURN expr
-    (10) stmt -> . RETURN
-    (11) stmt -> . PASS
-    (12) stmt -> . IF expr COLON block ELSE COLON block
-    (13) stmt -> . IF expr COLON block
-    (14) stmt -> . WHILE expr COLON block
-    (15) stmt -> . target EQ_OP expr
-    (16) stmt -> . expr
-    (46) target -> . ID
-    (47) target -> . ID call_chain
-    (22) expr -> . term
-    (23) expr -> . expr PLUS term
-    (24) expr -> . expr MINUS term
-    (25) expr -> . expr TIMES term
-    (26) expr -> . expr DIVIDE term
-    (27) expr -> . expr EQ term
-    (28) expr -> . expr NE term
-    (29) expr -> . expr LT term
-    (30) expr -> . expr GT term
-    (31) expr -> . expr AND term
-    (32) expr -> . expr OR term
-    (33) term -> . ID
-    (34) term -> . NUM
-    (35) term -> . STR
-    (36) term -> . LPAREN expr RPAREN
-    (37) term -> . NOT term
-    (38) term -> . MINUS term
-    (39) term -> . ID call_chain
-
-  ! shift/reduce conflict for CLASS resolved as shift
-  ! shift/reduce conflict for DEF resolved as shift
-  ! shift/reduce conflict for IMPORT resolved as shift
-  ! shift/reduce conflict for FROM resolved as shift
-  ! shift/reduce conflict for RETURN resolved as shift
-  ! shift/reduce conflict for PASS resolved as shift
-  ! shift/reduce conflict for IF resolved as shift
-  ! shift/reduce conflict for WHILE resolved as shift
-  ! shift/reduce conflict for ID resolved as shift
-  ! shift/reduce conflict for NUM resolved as shift
-  ! shift/reduce conflict for STR resolved as shift
-  ! shift/reduce conflict for LPAREN resolved as shift
-  ! shift/reduce conflict for NOT resolved as shift
-  ! shift/reduce conflict for MINUS resolved as shift
-    $end            reduce using rule 17 (block -> NEWLINE program .)
-    ELSE            reduce using rule 17 (block -> NEWLINE program .)
-    CLASS           shift and go to state 3
-    DEF             shift and go to state 6
-    IMPORT          shift and go to state 7
-    FROM            shift and go to state 8
-    RETURN          shift and go to state 9
-    PASS            shift and go to state 11
-    IF              shift and go to state 12
-    WHILE           shift and go to state 13
-    ID              shift and go to state 4
-    NUM             shift and go to state 17
-    STR             shift and go to state 18
-    LPAREN          shift and go to state 5
-    NOT             shift and go to state 19
-    MINUS           shift and go to state 16
-
-  ! CLASS           [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! DEF             [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! IMPORT          [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! FROM            [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! RETURN          [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! PASS            [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! IF              [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! WHILE           [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! ID              [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! NUM             [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! STR             [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! LPAREN          [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! NOT             [ reduce using rule 17 (block -> NEWLINE program .) ]
-  ! MINUS           [ reduce using rule 17 (block -> NEWLINE program .) ]
-
-    stmt                           shift and go to state 20
-    expr                           shift and go to state 10
-    target                         shift and go to state 14
-    term                           shift and go to state 15
-
-state 88
-
-    (43) call_chain -> call_chain LPAREN args RPAREN .
-
-    DOT             reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    LPAREN          reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    EQ_OP           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    PLUS            reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    MINUS           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    TIMES           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    DIVIDE          reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    EQ              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    NE              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    LT              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    GT              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    AND             reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    OR              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    CLASS           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    DEF             reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    IMPORT          reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    FROM            reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    RETURN          reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    PASS            reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    IF              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    WHILE           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    ID              reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    NUM             reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    STR             reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    NOT             reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    $end            reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    ELSE            reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    RPAREN          reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    COLON           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-    COMMA           reduce using rule 43 (call_chain -> call_chain LPAREN args RPAREN .)
-
-
-state 89
-
-    (45) args -> args COMMA expr .
-    (23) expr -> expr . PLUS term
-    (24) expr -> expr . MINUS term
-    (25) expr -> expr . TIMES term
-    (26) expr -> expr . DIVIDE term
-    (27) expr -> expr . EQ term
-    (28) expr -> expr . NE term
-    (29) expr -> expr . LT term
-    (30) expr -> expr . GT term
-    (31) expr -> expr . AND term
-    (32) expr -> expr . OR term
-
-    RPAREN          reduce using rule 45 (args -> args COMMA expr .)
-    COMMA           reduce using rule 45 (args -> args COMMA expr .)
-    PLUS            shift and go to state 32
-    MINUS           shift and go to state 33
-    TIMES           shift and go to state 34
-    DIVIDE          shift and go to state 35
-    EQ              shift and go to state 36
-    NE              shift and go to state 37
-    LT              shift and go to state 38
-    GT              shift and go to state 39
-    AND             shift and go to state 40
-    OR              shift and go to state 41
-
-
-state 90
-
-    (5) stmt -> DEF ID LPAREN params RPAREN . COLON block
-
-    COLON           shift and go to state 95
-
-
-state 91
-
-    (19) params -> params COMMA . ID
-
-    ID              shift and go to state 96
-
-
-state 92
-
-    (6) stmt -> DEF ID LPAREN RPAREN COLON . block
-    (17) block -> . NEWLINE program
-
-    NEWLINE         shift and go to state 74
-
-    block                          shift and go to state 97
-
-state 93
-
-    (12) stmt -> IF expr COLON block ELSE . COLON block
-
-    COLON           shift and go to state 98
-
-
-state 94
-
-    (3) stmt -> CLASS ID LPAREN ID RPAREN COLON . block
-    (17) block -> . NEWLINE program
-
-    NEWLINE         shift and go to state 74
-
-    block                          shift and go to state 99
-
-state 95
-
-    (5) stmt -> DEF ID LPAREN params RPAREN COLON . block
-    (17) block -> . NEWLINE program
-
-    NEWLINE         shift and go to state 74
-
-    block                          shift and go to state 100
-
-state 96
-
-    (19) params -> params COMMA ID .
-
-    RPAREN          reduce using rule 19 (params -> params COMMA ID .)
-    COMMA           reduce using rule 19 (params -> params COMMA ID .)
-
-
-state 97
-
-    (6) stmt -> DEF ID LPAREN RPAREN COLON block .
-
-    CLASS           reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    DEF             reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    IMPORT          reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    FROM            reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    RETURN          reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    PASS            reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    IF              reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    WHILE           reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    ID              reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    NUM             reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    STR             reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    LPAREN          reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    NOT             reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    MINUS           reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    $end            reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-    ELSE            reduce using rule 6 (stmt -> DEF ID LPAREN RPAREN COLON block .)
-
-
-state 98
-
-    (12) stmt -> IF expr COLON block ELSE COLON . block
-    (17) block -> . NEWLINE program
-
-    NEWLINE         shift and go to state 74
-
-    block                          shift and go to state 101
-
-state 99
-
-    (3) stmt -> CLASS ID LPAREN ID RPAREN COLON block .
-
-    CLASS           reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    DEF             reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    IMPORT          reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    FROM            reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    RETURN          reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    PASS            reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    IF              reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    WHILE           reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    ID              reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    NUM             reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    STR             reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    LPAREN          reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    NOT             reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    MINUS           reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    $end            reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-    ELSE            reduce using rule 3 (stmt -> CLASS ID LPAREN ID RPAREN COLON block .)
-
-
-state 100
-
-    (5) stmt -> DEF ID LPAREN params RPAREN COLON block .
-
-    CLASS           reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    DEF             reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    IMPORT          reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    FROM            reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    RETURN          reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    PASS            reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    IF              reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    WHILE           reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    ID              reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    NUM             reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    STR             reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    LPAREN          reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    NOT             reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    MINUS           reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    $end            reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-    ELSE            reduce using rule 5 (stmt -> DEF ID LPAREN params RPAREN COLON block .)
-
-
-state 101
-
-    (12) stmt -> IF expr COLON block ELSE COLON block .
-
-    CLASS           reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    DEF             reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    IMPORT          reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    FROM            reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    RETURN          reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    PASS            reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    IF              reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    WHILE           reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    ID              reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    NUM             reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    STR             reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    LPAREN          reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    NOT             reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    MINUS           reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    $end            reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
-    ELSE            reduce using rule 12 (stmt -> IF expr COLON block ELSE COLON block .)
+    (5) stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .
+
+    CLASS           reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    DEF             reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    ID              reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    SELF            reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    RETURN          reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    PASS            reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    $end            reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
+    DEDENT          reduce using rule 5 (stmt -> DEF method_name LPAREN param_list RPAREN COLON NEWLINE block .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for LPAREN in state 4 resolved as shift
-WARNING: shift/reduce conflict for ID in state 9 resolved as shift
-WARNING: shift/reduce conflict for NUM in state 9 resolved as shift
-WARNING: shift/reduce conflict for STR in state 9 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 9 resolved as shift
-WARNING: shift/reduce conflict for NOT in state 9 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 9 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 10 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 22 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 26 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 31 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 55 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 71 resolved as shift
-WARNING: shift/reduce conflict for ELSE in state 84 resolved as shift
-WARNING: shift/reduce conflict for CLASS in state 87 resolved as shift
-WARNING: shift/reduce conflict for DEF in state 87 resolved as shift
-WARNING: shift/reduce conflict for IMPORT in state 87 resolved as shift
-WARNING: shift/reduce conflict for FROM in state 87 resolved as shift
-WARNING: shift/reduce conflict for RETURN in state 87 resolved as shift
-WARNING: shift/reduce conflict for PASS in state 87 resolved as shift
-WARNING: shift/reduce conflict for IF in state 87 resolved as shift
-WARNING: shift/reduce conflict for WHILE in state 87 resolved as shift
-WARNING: shift/reduce conflict for ID in state 87 resolved as shift
-WARNING: shift/reduce conflict for NUM in state 87 resolved as shift
-WARNING: shift/reduce conflict for STR in state 87 resolved as shift
-WARNING: shift/reduce conflict for LPAREN in state 87 resolved as shift
-WARNING: shift/reduce conflict for NOT in state 87 resolved as shift
-WARNING: shift/reduce conflict for MINUS in state 87 resolved as shift
+WARNING: shift/reduce conflict for PLUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for MINUS in state 56 resolved as shift
+WARNING: shift/reduce conflict for MUL in state 56 resolved as shift
+WARNING: shift/reduce conflict for DIV in state 56 resolved as shift
+WARNING: reduce/reduce conflict in state 71 resolved using rule (term -> ID LPAREN arg_list RPAREN)
+WARNING: rejected rule (expr -> ID LPAREN arg_list RPAREN) in state 71
+WARNING: Rule (expr -> ID LPAREN arg_list RPAREN) is never reduced
