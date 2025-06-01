@@ -53,14 +53,7 @@ python main.py
 
 ## Project Structure
 
-| File / Folder     | Description |
-|-------------------|-------------|
-| **`main.py`**      | Entry point of the application. It loads test files, applies preprocessing, parsing, builds the AST, and performs OOP analysis. |
-| **`preprocessor.py`** | Handles cleanup and formatting of the code (e.g., removing comments, excessive indentation). This helps ensure better parsing accuracy. |
-| **`parser_module.py`** | Defines a custom lexer and parser using `ply`. It transforms input code into a parse tree using simplified grammar suited for OOP detection. |
-| **`ast_builder.py`** | Translates the parse tree into a lightweight AST that represents the code’s structure in an analysis-friendly format. |
-| **`analyzer.py`** | Implements the logic for traversing the AST and detecting OOP features like class and method usage, constructors, and instance tracking. It scores and classifies code as OOP or not. |
-| **`tests/`** | Directory containing sample `.py` test files. These are automatically analyzed when running `main.py`. You can freely add or replace files here. |
+
 
 ---
 
