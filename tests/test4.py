@@ -13,6 +13,11 @@ class Vehiculo:
     def __str__(self):
         return f"{self.marca} {self.modelo} a {self.velocidad} km/h"
 
+class Avion:
+    def __init__(self, marca, modelo):
+        self.marca = marca
+        self.modelo = modelo
+
 # Uso
 mi_carro = Vehiculo("Toyota", "Corolla")
 mi_carro.acelerar(30)
