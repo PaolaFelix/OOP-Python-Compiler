@@ -51,55 +51,7 @@ python main.py
 
 ---
 
-## Project Structure
-
-Okay, let's complete your README.md for the OOP Code Analyzer! I'll add the project structure section, detail what each file does, and provide a more in-depth justification for using a preprocessor and AST.
-
-Here's the complete README.md content:
-
-OOP Code Analyzer
-Description
-OOP Code Analyzer is a lightweight Python tool that detects whether a given piece of code follows Object-Oriented Programming (OOP) principles.
-
-It uses a custom preprocessor and an abstract syntax tree (AST) to evaluate the structural components of OOP, such as:
-
-Classes
-Methods
-Constructors (__init__)
-Attributes
-Instance usage
-Getting Started
-Prerequisites
-Make sure you have the following installed:
-
-Python 3.7 or higher
-Git
-🛠️ Installation & Running
-Clone the repository
-
-Bash
-
-git clone https://github.com/PaolaFelix/OOP-Python-Compiler.git
-cd OOP-Python-Compiler
-Install required dependency: PLY
-
-Bash
-
-pip install ply
-Run the analyzer
-
-Bash
-
-python main.py <directory_path>
-Example:
-
-Bash
-
-python main.py tests
-Note:
-By default, the tool expects a directory path as an argument. The tests directory is included for sample Python test files. You can add your own code by placing .py files inside any folder and specifying that folder's path when running the script.
-
-Core Components Explained
+## Core Components Explained
 
 1. preprocessor.py
 This module is responsible for the initial cleaning and normalization of the source code. Its primary role is to prepare the code for the subsequent lexical analysis by:
